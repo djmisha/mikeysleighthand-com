@@ -1,4 +1,7 @@
 ---
+import faqData from '../data/faq.json';
+import testimonialsData from '../data/testimonials.json';
+
 interface Props {
   title: string;
   description?: string;
@@ -16,8 +19,8 @@ const DEFAULT_OG_IMAGE = `${SITE_URL}/image/hero-home.jpg`;
 
 const {
   title,
-  description = "San Diego magician Mikey Sleighthand delivers refined close-up magic, sleight of hand, and unforgettable live entertainment for private events, weddings, and corporate gatherings.",
-  keywords = "San Diego magician, magician San Diego, close-up magician San Diego, event magician San Diego, wedding magician San Diego, corporate magician San Diego, sleight of hand San Diego",
+  description = "San Diego magician Mikey Sleighthand delivers refined close-up magic and sleight of hand entertainment for corporate events and weddings. Professional magic performances that elevate your gathering.",
+  keywords = "San Diego magician, corporate magician San Diego, wedding magician San Diego, magician San Diego, close-up magician San Diego, San Diego corporate entertainment, San Diego wedding entertainment, sleight of hand San Diego",
   ogTitle,
   ogDescription,
   ogUrl = SITE_URL,
@@ -44,31 +47,157 @@ const personSchema = {
   },
 };
 
+// Calculate aggregate rating from testimonials
+const totalRating = testimonialsData.reduce((sum: number, t: any) => sum + t.rating, 0);
+const averageRating = totalRating / testimonialsData.length;
+
+// LocalBusiness Schema with service areas and pricing
 const localBusinessSchema = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "@id": `${SITE_URL}/#service`,
+  "@type": "LocalBusiness",
+  "@id": `${SITE_URL}/#business`,
   name: "Mikey Sleighthand Magic",
   description,
   url: SITE_URL,
-  areaServed: {
-    "@type": "City",
-    name: "San Diego",
-  },
+  image: DEFAULT_OG_IMAGE,
+  priceRange: "$$$",
+  // TODO: Add when available
+  // telephone: "+1-XXX-XXX-XXXX",
+  // address: {
+  //   "@type": "PostalAddress",
+  //   streetAddress: "Your Street Address",
+  //   addressLocality: "San Diego",
+  //   addressRegion: "CA",
+  //   postalCode: "92101",
+  //   addressCountry: "US",
+  // },
+  // geo: {
+  //   "@type": "GeoCoordinates",
+  //   latitude: 32.7157,
+  //   longitude: -117.1611,
+  // },
+  areaServed: [
+    {
+      "@type": "City",
+      name: "San Diego",
+    },
+    {
+      "@type": "City",
+      name: "La Jolla",
+    },
+    {
+      "@type": "City",
+      name: "Del Mar",
+    },
+    {
+      "@type": "City",
+      name: "Coronado",
+    },
+    {
+      "@type": "City",
+      name: "Carlsbad",
+    },
+    {
+      "@type": "City",
+      name: "Encinitas",
+    },
+  ],
+  serviceType: [
+    "Corporate magic performance",
+    "Wedding magician",
+    "Close-up magic",
+    "Event magic entertainment",
+  ],
   provider: {
     "@id": `${SITE_URL}/#person`,
   },
-  serviceType: [
-    "Close-up magic",
-    "Event magic entertainment",
-    "Corporate magic performance",
-    "Wedding magician",
-  ],
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: averageRating.toFixed(1),
+    reviewCount: testimonialsData.length,
+    bestRating: "5",
+    worstRating: "1",
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Magic Performance Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Corporate Event Magic Performance",
+          description: "Up to 2 hours of close-up magic entertainment for corporate events, product launches, and executive gatherings.",
+        },
+        price: "5000",
+        priceCurrency: "USD",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "5000",
+          priceCurrency: "USD",
+        },
+        availability: "https://schema.org/InStock",
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Wedding Magic Performance",
+          description: "Up to 2 hours of close-up magic entertainment for wedding receptions and cocktail hours.",
+        },
+        price: "5000",
+        priceCurrency: "USD",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "5000",
+          priceCurrency: "USD",
+        },
+        availability: "https://schema.org/InStock",
+      },
+    ],
+  },
+};
+
+// Review Schema
+const reviewSchemas = testimonialsData.map((testimonial: any) => ({
+  "@type": "Review",
+  author: {
+    "@type": "Person",
+    name: testimonial.author,
+  },
+  datePublished: testimonial.datePublished,
+  reviewBody: testimonial.reviewBody,
+  reviewRating: {
+    "@type": "Rating",
+    ratingValue: testimonial.rating,
+    bestRating: "5",
+    worstRating: "1",
+  },
+  itemReviewed: {
+    "@id": `${SITE_URL}/#business`,
+  },
+}));
+
+// FAQPage Schema
+const faqPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/#faq`,
+  mainEntity: faqData.map((faq: any) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
 };
 
 const allStructuredData = [
   personSchema,
   localBusinessSchema,
+  ...reviewSchemas,
+  faqPageSchema,
   ...(structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : []),
 ];
 ---

@@ -3,6 +3,13 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(), 
+    sitemap({
+      lastmod: new Date(),
+      changefreq: 'monthly',
+      priority: 1.0,
+    })
+  ],
   site: 'https://www.mikeysmithmagic.com',
 });

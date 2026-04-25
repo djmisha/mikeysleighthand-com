@@ -1,0 +1,124 @@
+---
+import testimonialsData from '../data/testimonials.json';
+---
+
+<section id="testimonials" class="testimonials-section scene-section scene-scroll">
+  <div class="container">
+    <h2 class="text-reveal">What Clients Say</h2>
+    <p class="section-intro text-reveal">
+      Testimonials from corporate events and weddings across San Diego.
+    </p>
+    <div class="testimonials-grid text-reveal">
+      {testimonialsData.map((testimonial) => (
+        <div class="testimonial-card">
+          <div class="stars" aria-label={`${testimonial.rating} out of 5 stars`}>
+            {[...Array(testimonial.rating)].map(() => (
+              <span class="star">★</span>
+            ))}
+          </div>
+          <p class="testimonial-text">"{testimonial.reviewBody}"</p>
+          <div class="testimonial-author">
+            <p class="author-name">{testimonial.author}</p>
+            {testimonial.company && <p class="author-company">{testimonial.company}</p>}
+            <p class="event-type">{testimonial.eventType === 'corporate' ? 'Corporate Event' : 'Wedding'}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials-section {
+    padding: 6rem 0;
+    background: rgba(10, 10, 10, 0.4);
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .testimonial-card {
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid rgba(201, 169, 89, 0.3);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    border-color: rgba(201, 169, 89, 0.7);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(201, 169, 89, 0.15);
+  }
+
+  .stars {
+    color: var(--color-gold, #c9a959);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.25rem;
+  }
+
+  .star {
+    display: inline-block;
+  }
+
+  .testimonial-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'EB Garamond', serif;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+
+  .testimonial-author {
+    border-top: 1px solid rgba(201, 169, 89, 0.2);
+    padding-top: 1rem;
+  }
+
+  .author-name {
+    color: var(--color-gold, #c9a959);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .author-company {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .event-type {
+    color: rgba(201, 169, 89, 0.8);
+    font-family: 'EB Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .testimonials-section {
+      padding: 4rem 0;
+    }
+
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .testimonial-card {
+      padding: 1.5rem;
+    }
+
+    .testimonial-text {
+      font-size: 1rem;
+    }
+  }
+</style>

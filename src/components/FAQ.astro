@@ -1,0 +1,165 @@
+---
+import faqData from '../data/faq.json';
+---
+
+<section id="faq" class="faq-section scene-section scene-scroll">
+  <div class="container">
+    <h2 class="text-reveal">Frequently Asked Questions</h2>
+    <p class="section-intro text-reveal">
+      Common questions about booking a San Diego magician for corporate events and weddings.
+    </p>
+    <div class="faq-list text-reveal">
+      {faqData.map((item, index) => (
+        <div class="faq-item" data-faq-index={index}>
+          <button class="faq-question" aria-expanded="false" aria-controls={`faq-answer-${index}`}>
+            <span>{item.question}</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id={`faq-answer-${index}`} hidden>
+            <p>{item.answer}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    padding: 6rem 0;
+  }
+
+  .faq-list {
+    max-width: 800px;
+    margin: 3rem auto 0;
+  }
+
+  .faq-item {
+    margin-bottom: 1rem;
+    border: 1px solid rgba(201, 169, 89, 0.3);
+    border-radius: 4px;
+    background: rgba(20, 20, 20, 0.6);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .faq-item:hover {
+    border-color: rgba(201, 169, 89, 0.6);
+  }
+
+  .faq-question {
+    width: 100%;
+    padding: 1.5rem 2rem;
+    background: none;
+    border: none;
+    color: var(--color-gold, #c9a959);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .faq-question:hover {
+    color: #d4b76a;
+  }
+
+  .faq-icon {
+    font-size: 1.5rem;
+    font-weight: 300;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  .faq-item.active .faq-icon {
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    padding: 0 2rem 1.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: 'EB Garamond', serif;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .faq-answer p {
+    margin: 0;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .faq-section {
+      padding: 4rem 0;
+    }
+
+    .faq-question {
+      padding: 1.25rem 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    .faq-answer {
+      padding: 0 1.5rem 1.25rem;
+      font-size: 1rem;
+    }
+
+    .faq-icon {
+      font-size: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      const answer = item.querySelector('.faq-answer');
+      
+      if (question && answer) {
+        question.addEventListener('click', () => {
+          const isActive = item.classList.contains('active');
+          
+          // Close all other items
+          faqItems.forEach(otherItem => {
+            if (otherItem !== item) {
+              otherItem.classList.remove('active');
+              const otherAnswer = otherItem.querySelector('.faq-answer');
+              const otherQuestion = otherItem.querySelector('.faq-question');
+              if (otherAnswer) otherAnswer.hidden = true;
+              if (otherQuestion) otherQuestion.setAttribute('aria-expanded', 'false');
+            }
+          });
+          
+          // Toggle current item
+          if (isActive) {
+            item.classList.remove('active');
+            answer.hidden = true;
+            question.setAttribute('aria-expanded', 'false');
+          } else {
+            item.classList.add('active');
+            answer.hidden = false;
+            question.setAttribute('aria-expanded', 'true');
+          }
+        });
+      }
+    });
+  });
+</script>

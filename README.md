@@ -1,6 +1,6 @@
-# Mikey Smith Website
+# Mikey Sleighthand Website
 
-Single-page Astro website for Mikey Smith, a San Diego magician.
+Single-page Astro website for Mikey Sleighthand, a San Diego magician specializing in corporate events and weddings.
 
 ## Tech Stack
 

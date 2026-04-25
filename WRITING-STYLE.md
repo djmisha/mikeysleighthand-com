@@ -1,4 +1,4 @@
-# Mikey Smith Writing Style Guide
+# Mikey Sleighthand Writing Style Guide
 
 Voice goals:
 

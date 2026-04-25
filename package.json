@@ -13,7 +13,7 @@
     "magic",
     "san-diego"
   ],
-  "author": "Mikey Smith",
+  "author": "Mikey Sleighthand",
   "license": "ISC",
   "dependencies": {
     "@astrojs/react": "^4.2.1",
