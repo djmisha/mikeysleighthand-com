@@ -11,5 +11,5 @@ export default defineConfig({
       priority: 1.0,
     })
   ],
-  site: 'https://www.mikeysmithmagic.com',
+  site: 'https://www.mikeysleighthand.com',
 });

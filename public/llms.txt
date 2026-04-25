@@ -10,7 +10,7 @@ This website is a single landing page focused on booking inquiries.
 
 ## Page
 
-- [Home](https://www.mikeysmithmagic.com/): Hero, service highlights, and booking contact form.
+- [Home](https://www.mikeysleighthand.com/): Hero, service highlights, and booking contact form.
 
 ## Contact
 
