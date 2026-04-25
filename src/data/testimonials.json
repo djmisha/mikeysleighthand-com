@@ -1,50 +1,34 @@
 [
   {
-    "author": "Sarah Mitchell",
-    "company": "TechCorp San Diego",
+    "author": "David Chen",
+    "company": "Biotech Innovations SD",
     "rating": 5,
-    "reviewBody": "Mikey performed at our annual corporate gala and absolutely stole the show. Our executives and clients were mesmerized. The close-up magic during cocktail hour was the perfect icebreaker and everyone is still talking about it weeks later.",
-    "datePublished": "2025-11-15",
+    "reviewBody": "We hired Mikey for our company holiday party and honestly didn't know what to expect. He walked around doing close-up magic during dinner and I watched our CFO—who never smiles—absolutely lose it when a card appeared in his wallet. Everyone kept asking how he did it. Best $5k we spent on the event.",
+    "datePublished": "2025-12-15",
     "eventType": "corporate"
   },
   {
-    "author": "Jennifer & David Rodriguez",
+    "author": "Rachel & Tom",
     "company": null,
     "rating": 5,
-    "reviewBody": "Hiring Mikey for our wedding cocktail hour was the best decision we made. While we were taking photos, he kept our guests thoroughly entertained. People came up to us all night saying the magic was incredible. Worth every penny!",
-    "datePublished": "2025-09-22",
+    "reviewBody": "Mikey was at our wedding doing magic during cocktail hour while we did photos. My aunt called me the next day just to talk about him—she made him repeat a trick three times and still couldn't figure it out. Our guests are still bringing it up months later. Totally worth it.",
+    "datePublished": "2025-09-18",
     "eventType": "wedding"
   },
   {
-    "author": "Marcus Thompson",
-    "company": "Coastal Financial Group",
+    "author": "Jennifer M.",
+    "company": "Pacific Coast Ventures",
     "rating": 5,
-    "reviewBody": "We've hired entertainment for client appreciation events before, but Mikey's sleight of hand was on another level. Professional, engaging, and created exactly the sophisticated atmosphere we wanted. Our clients loved it.",
-    "datePublished": "2026-01-10",
+    "reviewBody": "I was skeptical about hiring a magician for our client appreciation dinner, but our VP insisted. Mikey was professional, didn't make it cheesy, and actually got our clients engaged and talking to each other. One of our newer clients said it was the best corporate event he'd been to. Definitely hiring him again.",
+    "datePublished": "2026-02-20",
     "eventType": "corporate"
   },
   {
-    "author": "Amanda Chen",
-    "company": "La Jolla Resort & Spa",
+    "author": "Mike S.",
+    "company": null,
     "rating": 5,
-    "reviewBody": "As an event coordinator, I've worked with many entertainers. Mikey is exceptional—punctual, professional, and his magic genuinely amazes guests. I recommend him to all our couples looking for wedding entertainment. He elevates every event.",
-    "datePublished": "2025-10-05",
+    "reviewBody": "My wife surprised me by booking Mikey for our wedding reception. I'm not usually into magic but this guy is legit—he did this thing with my wedding ring that I still can't explain. Our photographer got some great shots of people's reactions. Made the cocktail hour way more fun than just standing around.",
+    "datePublished": "2025-10-07",
     "eventType": "wedding"
-  },
-  {
-    "author": "Robert Lawson",
-    "company": "Precision Pharmaceuticals",
-    "rating": 5,
-    "reviewBody": "Mikey performed at our product launch party in San Diego. The interactive magic was perfect for networking—it got people talking and created a memorable brand experience. Several attendees asked for his contact info. Highly recommend for corporate events.",
-    "datePublished": "2026-02-18",
-    "eventType": "corporate"
-  },
-  {
-    "author": "Elizabeth Warren",
-    "company": "Horizon Tech Solutions",
-    "rating": 5,
-    "reviewBody": "We brought Mikey in for our annual holiday party and he was absolutely phenomenal. The magic added such a unique, upscale touch to the event. Our team is still buzzing about it. If you want entertainment that makes your corporate event truly memorable, book Mikey.",
-    "datePublished": "2025-12-08",
-    "eventType": "corporate"
   }
 ]
