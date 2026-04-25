@@ -168,6 +168,10 @@
       var windowHeight = window.innerHeight;
       var scrollDirection = scrollPosition > lastScrollPosition ? 'down' : 'up';
       lastScrollPosition = scrollPosition;
+      
+      // Detect mobile device for longer text visibility
+      var isMobile = window.innerWidth < 768;
+      var mobileOffset = isMobile ? 150 : 0; // Add 150px delay on mobile
 
       sections.forEach(function (section) {
         var rect = section.getBoundingClientRect();
@@ -185,7 +189,7 @@
         // Asymmetric trigger points based on scroll direction
         var triggerEnterDown = sectionTop - windowHeight + 400; // Scroll down: appear 400px before entering
         var triggerEnterUp = sectionTop - windowHeight - 100; // Scroll up: reappear much sooner (as soon as bottom enters viewport)
-        var triggerExit = sectionTop - 150; // When to fade out above (50px later than before for longer visibility)
+        var triggerExit = sectionTop - (150 + mobileOffset); // When to fade out above (longer on mobile)
         
         if (isHero && scrollPosition < windowHeight) {
           // Hero section: always show when near top of page
