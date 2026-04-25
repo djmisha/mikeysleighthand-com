@@ -1,0 +1,79 @@
+/* transitions.css — Magical page transition overlay */
+body.transitioning {
+    overflow: hidden;
+}
+
+.magic-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 9998;
+    pointer-events: none;
+    background: #0a0a0a;
+    opacity: 0;
+    overflow: hidden;
+    will-change: opacity;
+    transform: translateZ(0);
+    transition: opacity 0.3s ease;
+}
+
+.magic-transition-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Sparkle rain particles */
+.sparkle-rain {
+    position: absolute;
+    top: -6px;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 5px currentColor;
+    animation: sparkle-rain-fall var(--fall-duration, 0.9s) ease-in forwards;
+}
+
+@keyframes sparkle-rain-fall {
+    0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+        transform: translate(0, 10px) scale(1.3);
+    }
+    85% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(var(--drift-x, 0px), var(--fall-distance, 300px)) scale(0.4);
+        opacity: 0;
+    }
+}
+
+/* Legacy sparkle (used by heroSparkles.js) — keep for compatibility */
+.magic-transition-overlay .sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffffff;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sparkle-fade 0.8s ease-out forwards;
+}
+
+@keyframes sparkle-fade {
+    0% {
+        opacity: 1;
+        transform: scale(0) translate(0, 0);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.5) translate(var(--tx, 10px), var(--ty, -10px));
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0) translate(var(--tx2, 20px), var(--ty2, -20px));
+    }
+}

@@ -1,0 +1,181 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  keywords?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogUrl?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  structuredData?: object | object[];
+}
+
+const SITE_URL = "https://www.mikeysmithmagic.com";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/image/hero-home.jpg`;
+
+const {
+  title,
+  description = "San Diego magician Mikey Sleighthand delivers refined close-up magic, sleight of hand, and unforgettable live entertainment for private events, weddings, and corporate gatherings.",
+  keywords = "San Diego magician, magician San Diego, close-up magician San Diego, event magician San Diego, wedding magician San Diego, corporate magician San Diego, sleight of hand San Diego",
+  ogTitle,
+  ogDescription,
+  ogUrl = SITE_URL,
+  ogImage = DEFAULT_OG_IMAGE,
+  noindex = false,
+  structuredData,
+} = Astro.props;
+
+const resolvedOgTitle = ogTitle || title;
+const resolvedOgDescription = ogDescription || description;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${SITE_URL}/#person`,
+  name: "Mikey Sleighthand",
+  jobTitle: "Magician",
+  description,
+  url: SITE_URL,
+  image: DEFAULT_OG_IMAGE,
+  homeLocation: {
+    "@type": "Place",
+    name: "San Diego, California, United States",
+  },
+};
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": `${SITE_URL}/#service`,
+  name: "Mikey Sleighthand Magic",
+  description,
+  url: SITE_URL,
+  areaServed: {
+    "@type": "City",
+    name: "San Diego",
+  },
+  provider: {
+    "@id": `${SITE_URL}/#person`,
+  },
+  serviceType: [
+    "Close-up magic",
+    "Event magic entertainment",
+    "Corporate magic performance",
+    "Wedding magician",
+  ],
+};
+
+const allStructuredData = [
+  personSchema,
+  localBusinessSchema,
+  ...(structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : []),
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="keywords" content={keywords} />
+  <meta name="author" content="Mikey Sleighthand" />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+  {!noindex && <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />}
+  <meta name="theme-color" content="#c9a959" />
+
+  <link rel="canonical" href={ogUrl} />
+
+  <meta property="og:title" content={resolvedOgTitle} />
+  <meta property="og:description" content={resolvedOgDescription} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={ogUrl} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={resolvedOgTitle} />
+  <meta property="og:site_name" content="Mikey Sleighthand Magic" />
+  <meta property="og:locale" content="en_US" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={resolvedOgTitle} />
+  <meta name="twitter:description" content={resolvedOgDescription} />
+  <meta name="twitter:image" content={ogImage} />
+  <meta name="twitter:image:alt" content={resolvedOgTitle} />
+
+  <script type="application/ld+json" set:html={JSON.stringify(allStructuredData)} />
+
+  <link rel="icon" href="/image/favicon.png" type="image/png" />
+  <link rel="shortcut icon" href="/image/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/image/favicon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles/tokens.css" />
+  <link rel="stylesheet" href="/styles/styles.css" />
+  <link rel="stylesheet" href="/styles/responsive.css" />
+  <link rel="stylesheet" href="/styles/content-styles.css" />
+  <link rel="stylesheet" href="/styles/transitions.css" />
+  <link rel="stylesheet" href="/styles/dynamic-styles.css" />
+</head>
+<body>
+  <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" style="display:none">
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="tel" name="phone" />
+    <input type="text" name="experience" />
+    <input type="text" name="specialization" />
+    <input type="text" name="referral" />
+    <textarea name="message"></textarea>
+    <input type="text" name="bot-field" />
+  </form>
+
+  <main>
+    <slot />
+  </main>
+
+  <!-- Magic Owl Chatbot -->
+  <div class="owl-chatbot">
+    <div class="owl-avatar">
+      <span class="owl-emoji">🦉</span>
+    </div>
+    <div class="chat-window">
+      <div class="chat-header">
+        <h3>Mikey's Magical Owl</h3>
+        <button class="close-chat">×</button>
+      </div>
+      <div class="chat-messages">
+        <div class="message bot">Greetings. I'm the owl of mysteries. What brings you here tonight?</div>
+        <div class="suggestion-tags">
+          <span class="tag" data-query="booking">Booking</span>
+          <span class="tag" data-query="pricing">Pricing</span>
+          <span class="tag" data-query="joke">Tell me a joke</span>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="Type your message..." />
+        <button class="send-btn">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script is:inline src="/js/overlay.js"></script>
+  <script is:inline src="/js/transitions.js"></script>
+  <script is:inline src="/js/navigation.js"></script>
+  <script is:inline src="/js/interactions.js"></script>
+  <script is:inline src="/js/animations.js"></script>
+  <script is:inline src="/js/magicTricks.js"></script>
+  <script is:inline src="/js/links.js"></script>
+  <script is:inline src="/js/forms.js"></script>
+  <script is:inline src="/js/chatbot.js"></script>
+  <script is:inline src="/js/heroSparkles.js"></script>
+  <script is:inline src="/js/landing-scenes.js"></script>
+  <script is:inline src="/js/main.js"></script>
+</body>
+</html>

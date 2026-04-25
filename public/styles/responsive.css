@@ -1,0 +1,213 @@
+/* ==========================================================================
+    RESPONSIVE STYLES - Mikey Smith Website
+   ========================================================================== */
+
+/* ==========================================================================
+   Navigation Components
+   ========================================================================== */
+
+/* ---------- Hamburger Menu ---------- */
+.hamburger-menu {
+    display: block;
+    cursor: pointer;
+    width: 28px;
+    height: 20px;
+    z-index: 1000;
+    flex-shrink: 0;
+    position: relative;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.hamburger-menu:hover {
+    opacity: 1;
+}
+
+.hamburger-menu span {
+    display: block;
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    background: var(--color-gold, #c9a959);
+    border-radius: 0;
+    opacity: 1;
+    left: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hamburger-menu span:nth-child(1) {
+    top: 0px;
+    width: 100%;
+}
+
+.hamburger-menu span:nth-child(2) {
+    top: 9px;
+    width: 75%;
+}
+
+.hamburger-menu span:nth-child(3) {
+    top: 18px;
+    width: 50%;
+}
+
+/* ---------- Jumbo Navigation ---------- */
+.jumbo-nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background: rgba(5, 5, 5, 0.97);
+    z-index: 999;
+    transition: right 0.3s ease-in-out;
+    margin-top: 0;
+    overflow-y: auto;
+    padding: 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.jumbo-nav.open {
+    right: 0;
+}
+
+.nav-inner {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+}
+
+/* Jumbo navigation common styles (fallback if overlay not used) */
+.jumbo-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+}
+
+.jumbo-nav ul li a, 
+.jumbo-nav ul li span {
+    font-family: var(--font-heading, 'Cormorant Garamond'), serif;
+    color: var(--color-gold, #c9a959);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 1.8rem;
+    font-style: italic;
+}
+
+.jumbo-nav ul li a:hover,
+.jumbo-nav ul li span:hover {
+    color: #ffffff;
+}
+
+/* Nav column section titles */
+.jumbo-nav .nav-column h3 {
+    font-family: var(--font-display, 'Cinzel'), serif;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+}
+
+/* ---------- Desktop Navigation ---------- */
+.main-nav {
+    padding-right: 0;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.main-nav ul li {
+    margin-left: 1.5rem;
+}
+
+.main-nav a {
+    color: var(--color-gold, #c9a959);
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 0.95rem;
+    font-family: var(--font-display, 'Cinzel'), serif;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    position: relative;
+    bottom: 0px;
+    white-space: nowrap;
+}
+
+.main-nav a:hover {
+    color: var(--color-gold, #c9a959);
+}
+
+.nav-btn {
+    margin-top: 10px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+/* Mobile Navigation (max-width: 768px) */
+@media screen and (max-width: 768px) {
+
+    /* Left-align logo on mobile */
+    .logo {
+        text-align: left;
+    }
+
+    .logo h1 {
+        text-align: left;
+    }
+
+    .tagline {
+        text-align: left;
+    }
+
+    /* Center CTA buttons on mobile */
+    .cta-mobile-center {
+        text-align: center;
+    }
+
+    .content-details-card,
+    .attendance-info,
+    .attendance-info > div,
+    .attendance-info .members {
+        text-align: center;
+    }
+
+    a.content-btn.content-mt-medium,
+    a.content-btn.open-contact-form {
+        display: inline-block;
+        max-width: 280px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .scene-fixed {
+        background-attachment: scroll;
+    }
+
+    .scene-section > .container,
+    .scene-section > .hero-content {
+        padding: 56px 20px;
+    }
+}
+
+/* Hide Main Nav on Smaller Screens */
+@media screen and (max-width: 1120px) {
+    .main-nav {
+        display: none;
+    }
+}
+

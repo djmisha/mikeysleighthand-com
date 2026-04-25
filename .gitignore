@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# environment variables
+.env
+.env.production
+.env.local
+
+# macOS
+.DS_Store
+
+# legacy
+.credentials
+database/
+upload.sh
+
+# astro generated
+.astro/
+archived/

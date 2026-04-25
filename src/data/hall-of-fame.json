@@ -1,0 +1,43 @@
+{
+  "presidents": [
+    { "Name": "Aldric Vane", "Year": "1948", "EndYear": "1949" },
+    { "Name": "Percival Nightshade", "Year": "1949", "EndYear": "1950" },
+    { "Name": "Cornelius Ashford", "Year": "1950", "EndYear": "1951" },
+    { "Name": "Silas Blackthorn", "Year": "1951", "EndYear": "1953" },
+    { "Name": "Reginald Foxworth", "Year": "1958", "EndYear": "1960" },
+    { "Name": "Ambrose Delacroix", "Year": "1960", "EndYear": "1962" },
+    { "Name": "Dorian Ashveil", "Year": "2001", "EndYear": "2003" }
+  ],
+  "memberOfYear": [
+    { "Name": "Lysander Crowe", "Year": "2024" },
+    { "Name": "Theron Whitmore", "Year": "2023" },
+    { "Name": "Cassius Holloway", "Year": "2022" },
+    { "Name": "Evander Grimshaw", "Year": "2021" },
+    { "Name": "Octavian Mercer", "Year": "2020" },
+    { "Name": "Dashiell Ravenswood", "Year": "2019" }
+  ],
+  "performerOfYear": [
+    { "Name": "Vesper Montague", "Year": "2024" },
+    { "Name": "Alaric Devereux", "Year": "2023" },
+    { "Name": "Isolde Wren", "Year": "2022" },
+    { "Name": "Caspian Hale", "Year": "2021" },
+    { "Name": "Seraphina Locke", "Year": "2020" },
+    { "Name": "Orion Blackwell", "Year": "2019" }
+  ],
+  "stageContest": [
+    { "Name": "Magnus Ashworth", "Year": "2024" },
+    { "Name": "Elara Sinclair", "Year": "2023" },
+    { "Name": "Tobias Nightingale", "Year": "2022" },
+    { "Name": "Rowena Graves", "Year": "2021" },
+    { "Name": "Phineas Caldwell", "Year": "2020" },
+    { "Name": "Vivienne Thorn", "Year": "2019" }
+  ],
+  "closeUpContest": [
+    { "Name": "Jasper Wyndham", "Year": "2024" },
+    { "Name": "Celeste Morrow", "Year": "2023" },
+    { "Name": "Benedict Ashmore", "Year": "2022" },
+    { "Name": "Lenora Fairfax", "Year": "2021" },
+    { "Name": "Stellan Voss", "Year": "2020" },
+    { "Name": "Margaux Devereaux", "Year": "2019" }
+  ]
+}

@@ -1,0 +1,108 @@
+/* ============================================================
+   THE PARLOUR — Design System Tokens
+   The World's Most Exclusive Society of Magic
+   ============================================================ */
+
+:root {
+  /* ── Color Palette ── */
+
+  /* Backgrounds */
+  --color-bg-primary: #0a0a0a;
+  --color-bg-surface: #111111;
+  --color-bg-elevated: #171717;
+  --color-bg-card: #141414;
+  --color-bg-overlay: rgba(0, 0, 0, 0.85);
+
+  /* Text */
+  --color-text-primary: #f0ece2;
+  --color-text-secondary: #a09c94;
+  --color-text-muted: #6b6560;
+  --color-text-inverse: #0a0a0a;
+
+  /* Accent — Gold */
+  --color-gold: #c9a959;
+  --color-gold-light: #d4b96a;
+  --color-gold-dark: #a8893d;
+  --color-gold-subtle: rgba(201, 169, 89, 0.12);
+
+  /* Accent — Crimson (used sparingly) */
+  --color-crimson: #6b0f1a;
+  --color-crimson-light: #8a1424;
+
+  /* Borders & Dividers */
+  --color-border: #2a2a2a;
+  --color-border-subtle: #1e1e1e;
+  --color-border-gold: rgba(201, 169, 89, 0.3);
+
+  /* ── Typography ── */
+  --font-display: 'Cinzel', serif;
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-body: 'EB Garamond', serif;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3rem;
+  --text-5xl: 3.5rem;
+
+  /* Font Weights */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.1em;
+  --tracking-widest: 0.2em;
+  --tracking-ultra: 0.35em;
+
+  /* Line Heights */
+  --leading-tight: 1.1;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.8;
+
+  /* ── Spacing ── */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --space-section: 5rem;
+
+  /* ── Effects ── */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-gold: none;
+  --shadow-glow: none;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  --transition-elegant: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Layout ── */
+  --max-width: 1200px;
+  --max-width-narrow: 800px;
+  --max-width-wide: 1400px;
+  --header-height: 80px;
+}

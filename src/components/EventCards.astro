@@ -1,0 +1,36 @@
+---
+import eventsData from '../data/events.json';
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const events = eventsData
+  .filter((event: any) => new Date(event.Date) >= today)
+  .sort((a: any, b: any) => new Date(a.Date).getTime() - new Date(b.Date).getTime())
+  .slice(0, 5);
+
+function formatDate(dateStr: string): string {
+  const date = new Date(dateStr + 'T00:00:00');
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+---
+
+<section id="events" class="events-section">
+    <div class="container">
+        <h2>Upcoming Meetings and Events</h2>
+        <div class="event-cards">
+            {events.length > 0 ? (
+                events.map((event: any) => (
+                    <div class="event-card">
+                        <h3>{event.Name}</h3>
+                        <p class="event-date">{formatDate(event.Date)}</p>
+                        <p class="event-place">{event.Place}</p>
+                        <p>{event.Comment || 'Join us for this magical event.'}</p>
+                    </div>
+                ))
+            ) : (
+                <p>No upcoming events at this time. Please check back later.</p>
+            )}
+        </div>
+    </div>
+</section>

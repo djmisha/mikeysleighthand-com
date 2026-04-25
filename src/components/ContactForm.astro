@@ -1,0 +1,69 @@
+---
+---
+
+<section id="contact" class="contact-section">
+    <div class="container">
+        <h2>Book Your Event</h2>
+        <p class="section-intro">Reserve Mikey Sleighthand for your event. Share your details below and we will follow up with availability and options.</p>
+        
+        <div class="form-container">
+            <form id="contact-form" class="contact-form" method="post" novalidate>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your full name" required>
+                    <span class="error-message" id="name-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    <span class="error-message" id="email-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Your phone number" required>
+                    <span class="error-message" id="phone-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventDate">Event Date</label>
+                    <input type="date" id="eventDate" name="eventDate" required>
+                    <span class="error-message" id="eventDate-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="venue">Venue</label>
+                    <input type="text" id="venue" name="venue" placeholder="Event venue name or location" required>
+                    <span class="error-message" id="venue-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="service">Service</label>
+                    <select id="service" name="service" required>
+                        <option value="strolling-magic">Strolling magic $5000</option>
+                    </select>
+                    <span class="error-message" id="service-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Additional Details</label>
+                    <textarea id="message" name="message" placeholder="Tell us about your event, guest count, or any special requests" rows="5" required></textarea>
+                    <span class="error-message" id="message-error"></span>
+                </div>
+                
+                <div class="form-group honeypot">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" name="website" autocomplete="off">
+                </div>
+                
+                <div class="form-submit">
+                    <button type="submit" class="btn" id="submit-button">Request Booking</button>
+                </div>
+            </form>
+            <div id="form-response" class="form-response">
+                <p></p>
+            </div>
+        </div>
+    </div>
+</section>

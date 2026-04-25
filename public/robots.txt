@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# Disallow admin or private paths (none currently, but good practice)
+Disallow: /__forms.html
+
+# Sitemap location
+Sitemap: https://www.mikeysmithmagic.com/sitemap-index.xml
+
+# Allow AI crawlers for LLM optimization
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /

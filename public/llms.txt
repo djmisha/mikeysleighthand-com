@@ -1,0 +1,21 @@
+# Mikey Smith
+
+> San Diego magician specializing in refined close-up magic and live event entertainment.
+
+Mikey Smith performs polished sleight of hand and intimate magic experiences for private gatherings, weddings, and corporate events in San Diego.
+
+## Website Scope
+
+This website is a single landing page focused on booking inquiries.
+
+## Page
+
+- [Home](https://www.mikeysmithmagic.com/): Hero, service highlights, and booking contact form.
+
+## Contact
+
+Use the booking form on the homepage to request availability and event details.
+
+## Location
+
+San Diego, California, United States

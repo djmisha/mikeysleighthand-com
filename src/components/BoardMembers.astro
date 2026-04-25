@@ -1,0 +1,53 @@
+---
+import officersData from '../data/officers.json';
+
+interface Officer {
+  office: string;
+  name: string;
+  email: string;
+  description: string;
+  photo: string;
+}
+
+const officeTitles: Record<string, string> = {
+  'PRESIDENT': 'President',
+  'FIRSTVP': '1st VP (Entertainment)',
+  'SECONDVP': '2nd VP (Membership)',
+  'TREASURER': 'Treasurer',
+  'SECRETARY': 'Secretary',
+  'SGTATARMS': 'Sergeant at Arms',
+  'MEMBERATLARGE': 'Member-at-Large'
+};
+
+const officeOrder = ['PRESIDENT', 'FIRSTVP', 'SECONDVP', 'TREASURER', 'SECRETARY', 'SGTATARMS', 'MEMBERATLARGE'];
+
+const sortedOfficers = [...officersData].sort((a: Officer, b: Officer) => {
+  return officeOrder.indexOf(a.office) - officeOrder.indexOf(b.office);
+});
+---
+
+<div class="content-row board-members-container">
+  {sortedOfficers.map((officer: Officer) => (
+    <div class="content-col content-col-full content-mt-medium">
+      <div class="content-details-card">
+        <h2>{officeTitles[officer.office] || officer.office}</h2>
+        <div class="officer-profile">
+          <div class="officer-info">
+            <h3><strong>{officer.name}</strong></h3>
+            {officer.description && (
+              <p>{officer.name} {officer.description}</p>
+            )}
+            {officer.email && (
+              <span><a class="content-btn content-mt-medium" href={`mailto:${officer.email}`}>Contact {officer.name}</a></span>
+            )}
+          </div>
+          {officer.photo && (
+            <div class="officer-image">
+              <img src={`/image/${officer.photo}`} alt={officer.name} width="120" height="150">
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  ))}
+</div>

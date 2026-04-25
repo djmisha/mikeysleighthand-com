@@ -1,0 +1,484 @@
+/* Contact Form Styles - Consolidated to avoid duplication with content-styles.css */
+.form-group.has-error input,
+.form-group.has-error textarea {
+  border-color: #d9534f;
+  box-shadow: 0 0 0 0.2rem rgba(217, 83, 79, 0.25);
+}
+
+/* ============================================================
+   Parlour Overlay System — Reusable full-screen overlay
+   ============================================================ */
+
+body.overlay-open {
+  overflow: hidden;
+}
+
+.parlour-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 5, 0.97);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  overflow-y: auto;
+}
+
+.parlour-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.parlour-overlay-close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  left: auto;
+  background: none;
+  border: 1px solid var(--color-gold, #c9a959);
+  color: var(--color-gold, #c9a959);
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1;
+  font-family: var(--font-display, 'Cinzel'), serif;
+}
+
+.parlour-overlay-close:hover,
+.parlour-overlay-close:focus {
+  background: var(--color-gold, #c9a959);
+  color: #0a0a0a;
+  outline: 2px solid var(--color-gold, #c9a959);
+  outline-offset: 2px;
+}
+
+.parlour-overlay-body {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px 40px;
+}
+
+/* ── Navigation overlay — full-screen 3-column layout ── */
+.parlour-overlay-body .nav-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 60px;
+  gap: 0;
+  margin-top: 0;
+}
+
+.parlour-overlay-body .nav-column {
+  flex: 1;
+  padding: 30px 50px;
+  border-right: 1px solid rgba(201, 169, 89, 0.15);
+  text-align: left;
+}
+
+.parlour-overlay-body .nav-column:last-child {
+  border-right: none;
+}
+
+.parlour-overlay-body .nav-column h3 {
+  font-family: var(--font-display, 'Cinzel'), serif;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-weight: 400;
+}
+
+.parlour-overlay-body .nav-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.parlour-overlay-body .nav-column ul li {
+  margin-bottom: 0;
+}
+
+.parlour-overlay-body .nav-column ul li a,
+.parlour-overlay-body .nav-column ul li span {
+  font-family: var(--font-heading, 'Cormorant Garamond'), serif;
+  font-size: 2.4rem;
+  color: var(--color-gold, #c9a959);
+  text-decoration: none;
+  font-weight: 400;
+  display: block;
+  padding: 0.45rem 0;
+  line-height: 1.15;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.parlour-overlay-body .nav-column ul li a:hover,
+.parlour-overlay-body .nav-column ul li span:hover {
+  color: #ffffff;
+  padding-left: 10px;
+}
+
+/* Mobile nav overlay — stacked, no scroll needed */
+@media (max-width: 768px) {
+  .parlour-overlay-body .nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 28px;
+    justify-content: center;
+    gap: 0;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
+
+  .parlour-overlay-body .nav-column {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 0;
+    width: 100%;
+  }
+
+  .parlour-overlay-body .nav-column:last-child {
+    border-bottom: none;
+  }
+
+  .parlour-overlay-body .nav-column h3 {
+    font-size: 0.6rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .parlour-overlay-body .nav-column ul li a,
+  .parlour-overlay-body .nav-column ul li span {
+    font-size: 1.7rem;
+    padding: 0.3rem 0;
+  }
+}
+
+/* Magic area inside parlour overlay */
+.parlour-overlay-body #magic-area {
+  max-width: 800px;
+  width: 90%;
+  padding: 30px 20px;
+  font-size: 1.2rem;
+  text-align: center;
+  color: #fff;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 10px auto;
+  overflow-y: auto;
+  max-height: 85vh;
+}
+
+.parlour-overlay-body #magic-area h2 {
+  color: var(--color-gold, #c9a959);
+  margin-bottom: 20px;
+}
+
+/* Secret content inside overlay */
+.parlour-overlay-body .secret-content {
+  max-width: 900px;
+  padding: 40px;
+  text-align: center;
+  color: #fff;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+
+#magic-trick-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+#magic-trick-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#magic-area {
+  max-width: 800px;
+  width: 90%;
+  padding: 30px 20px;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #fff;
+  background-color: rgba(20, 20, 20, 0.85);
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(201, 169, 89, 0.5);
+  transition: all 0.5s ease;
+  margin: 10px;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 5px;
+}
+
+.card {
+  font-size: 7rem;
+  margin: 5px;
+  transition: all 0.5s ease;
+  cursor: default;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
+.mind-reading-animation {
+  font-size: 3rem;
+  margin: 20px;
+}
+
+.crystal-ball {
+  display: inline-block;
+  font-size: 5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.7; }
+}
+
+/* Mobile adjustments for magic area */
+@media (max-width: 768px) {
+  #magic-area {
+    padding: 20px 15px;
+    font-size: 1.2rem;
+    width: 95%;
+    max-height: 85vh;
+  }
+  
+  .card {
+    font-size: 5rem;
+    margin: 3px;
+  }
+  
+  .mind-reading-animation {
+    font-size: 2rem;
+    margin: 15px;
+  }
+  
+  .crystal-ball {
+    font-size: 4rem;
+  }
+}
+
+/* Further adjustments for very small screens */
+@media (max-width: 480px) {
+  #magic-area {
+    padding: 15px 10px;
+    font-size: 1rem;
+  }
+  
+  .card {
+    font-size: 4.5rem;
+    margin: 2px;
+  }
+  
+  .crystal-ball {
+    font-size: 3.5rem;
+  }
+}
+
+/* Secret Overlay */
+.secret-overlay { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  background-color: rgba(0, 0, 0, 0.95); 
+  z-index: 10000; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  opacity: 0; 
+  transition: opacity 0.5s ease; 
+}
+
+.secret-overlay.visible { 
+  opacity: 1; 
+}
+
+.secret-content { 
+  max-width: 900px; 
+  padding: 40px; 
+  text-align: center; 
+  color: #fff; 
+  background-color: rgba(20, 20, 20, 0.85); 
+  border-radius: 10px; 
+  box-shadow: 0 0 30px rgba(201, 169, 89, 0.5); 
+  transform: scale(0.9); 
+  transition: transform 0.5s ease; 
+  margin: 20px; 
+}
+
+.secret-overlay.visible .secret-content { 
+  transform: scale(1); 
+}
+
+.secret-heading { 
+  font-family: var(--font-heading, 'Cormorant Garamond'), serif; 
+  font-size: 2.5rem; 
+  line-height: 1.4; 
+  margin-bottom: 30px; 
+  color: var(--color-gold, #c9a959); 
+}
+
+.secret-heading .emphasis { 
+  font-size: 2.8rem; 
+  font-weight: bold; 
+  color: #fff; 
+  text-shadow: 0 0 10px var(--color-gold, #c9a959); 
+  padding: 0 5px; 
+  display: inline-block; 
+  transform: scale(1.2); 
+}
+
+.secret-explanation { 
+  font-family: var(--font-body, 'EB Garamond'), serif; 
+  font-size: 1.25rem; 
+  line-height: 1.6; 
+  margin-bottom: 30px; 
+}
+
+@media (max-width: 768px) { 
+  .secret-heading { font-size: 1.8rem; } 
+  .secret-heading .emphasis { font-size: 2rem; } 
+  .secret-explanation { font-size: 1.25rem; } 
+}
+
+/* Magic Sparkle Animation */
+@keyframes sparkle {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: scale(1) rotate(360deg); opacity: 0; }
+}
+
+.magic-sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.magic-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+}
+
+/* ── Contact Form Overlay ── */
+.overlay-contact-form {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.overlay-contact-form h2 {
+  font-family: var(--font-heading, 'Cormorant Garamond'), serif;
+  font-size: 2.4rem;
+  color: var(--color-gold, #c9a959);
+  margin-bottom: 0.5rem;
+}
+
+.overlay-contact-form .section-intro {
+  font-size: 1rem;
+  color: var(--color-text-secondary, #b0a890);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.overlay-contact-form .form-container {
+  text-align: left;
+}
+
+.overlay-contact-form .form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.overlay-contact-form .form-group-half {
+  flex: 1;
+}
+
+.overlay-contact-form .form-group {
+  margin-bottom: 0.75rem;
+}
+
+.overlay-contact-form .form-group label {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.overlay-contact-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.overlay-contact-form .form-submit {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Prevent scroll on desktop */
+.parlour-overlay .overlay-contact-form {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .overlay-contact-form .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .overlay-contact-form h2 {
+    font-size: 1.8rem;
+  }
+
+  .parlour-overlay .overlay-contact-form {
+    max-height: none;
+    overflow-y: visible;
+  }
+}

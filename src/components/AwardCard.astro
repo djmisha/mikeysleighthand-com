@@ -1,0 +1,49 @@
+---
+interface Props {
+  name: string;
+  year: string;
+  title: string;
+  endYear?: string;
+  suitIndex: number;
+}
+
+const { name, year, title, endYear, suitIndex } = Astro.props;
+
+const suits = ["hearts", "diamonds", "clubs", "spades"];
+const suitSymbols = ["♥", "♦", "♣", "♠"];
+const currentSuitIndex = suitIndex % 4;
+const currentSuit = suits[currentSuitIndex];
+const currentSuitSymbol = suitSymbols[currentSuitIndex];
+
+const yearDisplay = endYear && endYear !== "0000" ? `${year} - ${endYear}` : year;
+---
+
+<div class="award-card">
+    <div class="award-card-inner">
+        <div class="award-front">
+            <div class="nameplate">
+                <div class="corner top-left"></div>
+                <div class="corner top-right"></div>
+                <div class="corner bottom-left"></div>
+                <div class="corner bottom-right"></div>
+                <div class="award-name">{name}</div>
+                <div class="award-years">{yearDisplay}</div>
+                <div class="award-title">{title}</div>
+            </div>
+            <div class="shine"></div>
+        </div>
+        <div class="award-back">
+            <div class={`suit ${currentSuit}`}>{currentSuitSymbol}</div>
+        </div>
+    </div>
+    <div class="sparkle-container">
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+    </div>
+</div>

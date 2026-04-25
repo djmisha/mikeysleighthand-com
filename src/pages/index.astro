@@ -1,0 +1,75 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const siteUrl = "https://www.mikeysmithmagic.com";
+
+const homePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${siteUrl}/#webpage`,
+  url: siteUrl,
+  name: "San Diego Magician | Mikey Sleighthand",
+  description:
+    "San Diego magician Mikey Sleighthand offers close-up magic, sleight of hand, and live event entertainment for private gatherings, weddings, and corporate events.",
+  isPartOf: { "@id": `${siteUrl}/#service` },
+  about: { "@id": `${siteUrl}/#person` },
+};
+---
+
+<Layout
+  title="San Diego Magician | Mikey Sleighthand"
+  description="San Diego magician Mikey Sleighthand offers close-up magic, sleight of hand, and live event entertainment for private gatherings, weddings, and corporate events."
+  keywords="San Diego magician, magician San Diego, close-up magic San Diego, corporate magician San Diego, wedding magician San Diego, private event magician San Diego"
+  ogUrl={siteUrl}
+  ogImage={`${siteUrl}/image/hero-home.jpg`}
+  structuredData={homePageSchema}
+>
+  <section id="hero" class="hero-section hero-home scene-section scene-fixed">
+    <div class="hero-content">
+      <h1 class="hero-eyebrow">San Diego Magician</h1>
+      <h2>Mikey Sleighthand</h2>
+      <p class="hero-subhead">Gentleman Magician of the Modern Frontier</p>
+      <p>
+        Step into a world where refined charm meets timeless mystery. Mikey Sleighthand creates intimate, unforgettable moments of wonder through precision sleight of hand.
+      </p>
+      <a href="#cta" class="btn">Inquire About Your Event</a>
+    </div>
+  </section>
+
+  <section id="services" class="about-section scene-section scene-scroll">
+    <div class="container">
+      <h2>The Art of Sleight of Hand and Misdirection</h2>
+      <p class="section-intro">
+        With steady hands and a watchful eye, Mikey guides attention with intention. Every movement is deliberate, every pause meaningful, and every reveal impossible to explain.
+      </p>
+    </div>
+  </section>
+
+  <section class="magic-arts-section scene-section scene-fixed" id="cards-coins">
+    <div class="container">
+      <h2>Cards and Coins, Masterfully Handled</h2>
+      <p class="section-intro">
+        A deck of cards. A few coins. In Mikey&apos;s hands, simple objects become instruments of wonder, vanishing and reappearing as if ruled by unseen frontier law.
+      </p>
+    </div>
+  </section>
+
+  <section class="experience-magic-section scene-section scene-scroll" id="close-up-illusions">
+    <div class="container">
+      <h2>Close-Up Illusions, Right Before Your Eyes</h2>
+      <p class="section-intro">
+        No stage. No curtain. No distance. Mikey brings the impossible to your table, your guests, and your event, close enough to inspect and still beyond explanation.
+      </p>
+    </div>
+  </section>
+
+  <section id="cta" class="membership-section scene-section scene-fixed cta-section">
+    <div class="container">
+      <h2>Bring Wonder To Your Event</h2>
+      <p class="section-intro">
+        Reserve an unforgettable performance for private gatherings, weddings, and distinguished events across San Diego.
+      </p>
+      <a href="#" class="btn open-contact-form">Inquire About Your Event</a>
+    </div>
+  </section>
+</Layout>
