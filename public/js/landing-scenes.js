@@ -235,4 +235,37 @@
     }, 50);
     window.addEventListener("scroll", checkTextReveal);
   }
+
+  // Float-up animation for testimonial cards and FAQ items
+  function initFloatUpAnimations() {
+    var floatUpItems = document.querySelectorAll('.float-up-item');
+    
+    if (floatUpItems.length === 0) return;
+
+    function checkFloatUp() {
+      var windowHeight = window.innerHeight;
+
+      floatUpItems.forEach(function(item) {
+        // Skip if already animated
+        if (item.classList.contains('animated')) return;
+
+        var rect = item.getBoundingClientRect();
+        var triggerPoint = windowHeight * 0.85; // Trigger when item is 85% into viewport
+
+        // Add animated class when item enters viewport (only once, never remove)
+        if (rect.top < triggerPoint && rect.bottom > 0) {
+          item.classList.add('animated');
+        }
+      });
+    }
+
+    // Initial check
+    setTimeout(checkFloatUp, 100);
+    
+    // Check on scroll
+    window.addEventListener('scroll', checkFloatUp);
+  }
+
+  // Initialize float-up animations
+  initFloatUpAnimations();
 })();

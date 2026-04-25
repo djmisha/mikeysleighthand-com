@@ -10,7 +10,7 @@ import testimonialsData from '../data/testimonials.json';
     </p>
     <div class="testimonials-grid">
       {testimonialsData.map((testimonial) => (
-        <div class="testimonial-card">
+        <div class="testimonial-card float-up-item">
           <div class="stars" aria-label={`${testimonial.rating} out of 5 stars`}>
             {[...Array(testimonial.rating)].map(() => (
               <span class="star">★</span>
@@ -48,6 +48,24 @@ import testimonialsData from '../data/testimonials.json';
     padding: 2rem;
     transition: all 0.3s ease;
   }
+
+  /* Float-up animation */
+  .float-up-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .float-up-item.animated {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered delays for testimonials */
+  .testimonial-card:nth-child(1) { transition-delay: 0.1s; }
+  .testimonial-card:nth-child(2) { transition-delay: 0.2s; }
+  .testimonial-card:nth-child(3) { transition-delay: 0.3s; }
+  .testimonial-card:nth-child(4) { transition-delay: 0.4s; }
 
   .testimonial-card:hover {
     border-color: rgba(201, 169, 89, 0.7);

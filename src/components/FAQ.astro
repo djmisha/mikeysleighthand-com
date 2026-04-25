@@ -10,7 +10,7 @@ import faqData from '../data/faq.json';
     </p>
     <div class="faq-list">
       {faqData.map((item, index) => (
-        <div class="faq-item" data-faq-index={index}>
+        <div class="faq-item float-up-item" data-faq-index={index}>
           <button class="faq-question" aria-expanded="false" aria-controls={`faq-answer-${index}`}>
             <span>{item.question}</span>
             <span class="faq-icon" aria-hidden="true">+</span>
@@ -43,6 +43,28 @@ import faqData from '../data/faq.json';
     transition: all 0.3s ease;
   }
 
+  /* Float-up animation */
+  .float-up-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .float-up-item.animated {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered delays for FAQ items */
+  .faq-item:nth-child(1) { transition-delay: 0.05s; }
+  .faq-item:nth-child(2) { transition-delay: 0.1s; }
+  .faq-item:nth-child(3) { transition-delay: 0.15s; }
+  .faq-item:nth-child(4) { transition-delay: 0.2s; }
+  .faq-item:nth-child(5) { transition-delay: 0.25s; }
+  .faq-item:nth-child(6) { transition-delay: 0.3s; }
+  .faq-item:nth-child(7) { transition-delay: 0.35s; }
+  .faq-item:nth-child(8) { transition-delay: 0.4s; }
+
   .faq-item:hover {
     border-color: rgba(201, 169, 89, 0.6);
   }
@@ -71,13 +93,9 @@ import faqData from '../data/faq.json';
   .faq-icon {
     font-size: 1.5rem;
     font-weight: 300;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
     flex-shrink: 0;
     margin-left: 1rem;
-  }
-
-  .faq-item.active .faq-icon {
-    transform: rotate(45deg);
   }
 
   .faq-answer {
@@ -132,8 +150,9 @@ import faqData from '../data/faq.json';
     faqItems.forEach(item => {
       const question = item.querySelector('.faq-question');
       const answer = item.querySelector('.faq-answer');
+      const icon = item.querySelector('.faq-icon');
       
-      if (question && answer) {
+      if (question && answer && icon) {
         question.addEventListener('click', () => {
           const isActive = item.classList.contains('active');
           
@@ -143,8 +162,10 @@ import faqData from '../data/faq.json';
               otherItem.classList.remove('active');
               const otherAnswer = otherItem.querySelector('.faq-answer');
               const otherQuestion = otherItem.querySelector('.faq-question');
+              const otherIcon = otherItem.querySelector('.faq-icon');
               if (otherAnswer) otherAnswer.hidden = true;
               if (otherQuestion) otherQuestion.setAttribute('aria-expanded', 'false');
+              if (otherIcon) otherIcon.textContent = '+';
             }
           });
           
@@ -153,10 +174,12 @@ import faqData from '../data/faq.json';
             item.classList.remove('active');
             answer.hidden = true;
             question.setAttribute('aria-expanded', 'false');
+            icon.textContent = '+';
           } else {
             item.classList.add('active');
             answer.hidden = false;
             question.setAttribute('aria-expanded', 'true');
+            icon.textContent = '−';
           }
         });
       }
