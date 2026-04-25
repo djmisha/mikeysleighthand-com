@@ -185,7 +185,7 @@
         // Asymmetric trigger points based on scroll direction
         var triggerEnterDown = sectionTop - windowHeight + 400; // Scroll down: appear 400px before entering
         var triggerEnterUp = sectionTop - windowHeight - 100; // Scroll up: reappear much sooner (as soon as bottom enters viewport)
-        var triggerExit = sectionTop - 200; // When to fade out above
+        var triggerExit = sectionTop - 150; // When to fade out above (50px later than before for longer visibility)
         
         if (isHero && scrollPosition < windowHeight) {
           // Hero section: always show when near top of page
