@@ -5,7 +5,7 @@ window.setupOwlChatbot = function () {
     "Intriguing question. Mikey's performances blend refined charm with impossible moments—perfect for elevating any gathering.",
     "Ah, you're curious. That's how all great mysteries begin. Mikey specializes in sleight of hand that defies explanation.",
     "A wise inquiry. What makes Mikey's magic unique is the intimacy—cards and coins transforming right before your eyes.",
-    "Hmm, let me conjure an answer for you: Mikey brings wonder to private events, weddings, and distinguished gatherings across San Diego.",
+    "Hmm, let me conjure an answer for you: Mikey brings wonder to private events, weddings, and distinguished gatherings across San Diego or any destination. Travel arrangements available.",
     "Excellent timing for such a question. Mikey's close-up illusions are crafted for those who appreciate artistry over spectacle.",
     "I see you're drawn to the mysterious. Mikey's sleight of hand turns ordinary moments into unforgettable experiences.",
     "A thoughtful question indeed. Every performance is tailored—no two events witness the same impossibilities.",
