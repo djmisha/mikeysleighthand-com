@@ -8,7 +8,7 @@ import faqData from '../data/faq.json';
     <p class="section-intro text-reveal">
       Common questions about booking a San Diego magician for corporate events and weddings.
     </p>
-    <div class="faq-list text-reveal">
+    <div class="faq-list">
       {faqData.map((item, index) => (
         <div class="faq-item" data-faq-index={index}>
           <button class="faq-question" aria-expanded="false" aria-controls={`faq-answer-${index}`}>

@@ -177,6 +177,9 @@
         // Check if this is the hero section
         var isHero = section.id === 'hero' || section.classList.contains('hero-section');
         
+        // Check if this section should not fade out when scrolled past
+        var noFadeout = section.classList.contains('no-fadeout');
+        
         var reveals = section.querySelectorAll(".text-reveal");
         
         // Asymmetric trigger points based on scroll direction
@@ -190,8 +193,8 @@
             el.classList.add("visible");
             el.classList.remove("scrolled-past");
           });
-        } else if (scrollPosition > triggerExit && rect.top < 0) {
-          // Section has been scrolled past - fade out upward
+        } else if (scrollPosition > triggerExit && rect.top < 0 && !noFadeout) {
+          // Section has been scrolled past - fade out upward (skip if noFadeout)
           reveals.forEach(function (el) {
             el.classList.remove("visible");
             el.classList.add("scrolled-past");
