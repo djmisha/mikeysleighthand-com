@@ -3,19 +3,17 @@ import testimonialsData from '../data/testimonials.json';
 ---
 
 <!--
-  Testimonials — horizontal snap-scroll carousel
-  ──────────────────────────────────────────────
-  Displays testimonial cards in a single-row carousel that can be swiped
-  horizontally on both mobile and desktop.  This keeps the section within
-  one full-screen scene regardless of viewport size.
+  Testimonials — Embla Carousel (embla-carousel)
+  ───────────────────────────────────────────────
+  One testimonial card per viewport on every screen size.
+  Powered by Embla Carousel: the most popular, actively maintained,
+  mobile-first open-source carousel library.
 
-  Mobile:  ~1 card visible at a time (85% card width), swipe to advance.
-  Desktop: ~2 cards visible at a time (46% card width), scroll or click dots.
-
-  The <section> carries the scene-section class so scroll-hijack.js manages
-  the enter/exit animations of h2 and .section-intro via .text-reveal.
-  Carousel cards use a lightweight .card-reveal class instead of .text-reveal
-  so they are not affected by the scene transition stagger logic.
+  Features:
+  • Smooth touch/pointer drag on mobile and desktop
+  • Infinite loop (wraps first ↔ last)
+  • Dot indicator synced to the active slide
+  • No horizontal overflow visible outside the section
 -->
 <section id="testimonials" class="testimonials-section scene-section scene-scroll">
   <div class="container">
@@ -25,22 +23,25 @@ import testimonialsData from '../data/testimonials.json';
     </p>
 
     <div class="testimonials-carousel-wrap">
-      <div class="testimonials-carousel" id="testimonials-carousel" role="list">
-        {testimonialsData.map((testimonial) => (
-          <article class="testimonial-card card-reveal" role="listitem">
-            <div class="stars" aria-label={`${testimonial.rating} out of 5 stars`}>
-              {[...Array(testimonial.rating)].map(() => (
-                <span class="star" aria-hidden="true">★</span>
-              ))}
-            </div>
-            <p class="testimonial-text">"{testimonial.reviewBody}"</p>
-            <div class="testimonial-author">
-              <p class="author-name">{testimonial.author}</p>
-              {testimonial.company && <p class="author-company">{testimonial.company}</p>}
-              <p class="event-type">{testimonial.eventType === 'corporate' ? 'Corporate Event' : 'Wedding'}</p>
-            </div>
-          </article>
-        ))}
+      <!-- Embla viewport (overflow hidden applied by JS) -->
+      <div class="embla" id="testimonials-embla">
+        <div class="embla__container">
+          {testimonialsData.map((testimonial) => (
+            <article class="embla__slide testimonial-card card-reveal" role="listitem">
+              <div class="stars" aria-label={`${testimonial.rating} out of 5 stars`}>
+                {[...Array(testimonial.rating)].map(() => (
+                  <span class="star" aria-hidden="true">★</span>
+                ))}
+              </div>
+              <p class="testimonial-text">"{testimonial.reviewBody}"</p>
+              <div class="testimonial-author">
+                <p class="author-name">{testimonial.author}</p>
+                {testimonial.company && <p class="author-company">{testimonial.company}</p>}
+                <p class="event-type">{testimonial.eventType === 'corporate' ? 'Corporate Event' : 'Wedding'}</p>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
 
       <!-- Dot navigation -->
@@ -60,54 +61,36 @@ import testimonialsData from '../data/testimonials.json';
 <style>
   .testimonials-section {
     padding: 0;
-    /*
-     * overflow-x: clip clips the carousel overflow without creating a BFC or a
-     * new scroll-container context (unlike overflow-x: hidden).  This prevents
-     * the carousel's scroll-width from widening the document while leaving the
-     * inner snap-scroll carousel fully functional.
-     */
-    overflow-x: clip;
+    /* Prevent Embla from expanding the document width */
+    overflow: hidden;
   }
 
-  /* Wrapper — no overflow set here; clipping is handled by the section.
-   * width:100% ensures the inner carousel's percentage widths resolve correctly
-   * even though .container is a flex item inside .scene-section (display:flex). */
   .testimonials-carousel-wrap {
     position: relative;
     margin-top: 1.5rem;
     width: 100%;
   }
 
-  /* ── Carousel track ── */
-  .testimonials-carousel {
+  /* ── Embla viewport ── */
+  .embla {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  /* ── Embla track ── */
+  .embla__container {
     display: flex;
-    flex-wrap: nowrap;               /* always single-row */
-    width: 100%;                     /* needed so card's calc(100%-X) resolves */
-    gap: 1.25rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;          /* Firefox */
-    -ms-overflow-style: none;       /* IE / Edge */
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.5rem;
-    /* Allow touch swipe without triggering page scroll */
-    touch-action: pan-x;
+    touch-action: pan-y pinch-zoom;
   }
 
-  .testimonials-carousel::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* ── Card — single card per view, full width, no peek ── */
-  .testimonial-card {
-    /*
-     * 100% of the carousel container width = one card fills the visible area
-     * exactly on mobile, with no peeking of the next card.  The container
-     * has 20px side padding, so the card is viewport-width minus that padding.
-     */
+  /* ── Slide — one full-width card per view ── */
+  .embla__slide {
     flex: 0 0 100%;
     min-width: 0;
-    scroll-snap-align: start;
+  }
+
+  /* ── Testimonial card ── */
+  .testimonial-card {
     background: rgba(20, 20, 20, 0.82);
     border: 1px solid rgba(201, 169, 89, 0.3);
     border-radius: 8px;
@@ -122,7 +105,7 @@ import testimonialsData from '../data/testimonials.json';
     border-color: rgba(201, 169, 89, 0.65);
   }
 
-  /* Card enter animation (driven by scroll-hijack scene enter) */
+  /* Card enter animation */
   .card-reveal {
     opacity: 0;
     transform: translateY(16px);
@@ -133,12 +116,6 @@ import testimonialsData from '../data/testimonials.json';
     opacity: 1;
     transform: translateY(0);
   }
-
-  /* Staggered card appearance */
-  .testimonial-card:nth-child(1).card-reveal { transition-delay: 0.3s; }
-  .testimonial-card:nth-child(2).card-reveal { transition-delay: 0.38s; }
-  .testimonial-card:nth-child(3).card-reveal { transition-delay: 0.46s; }
-  .testimonial-card:nth-child(4).card-reveal { transition-delay: 0.54s; }
 
   /* ── Stars ── */
   .stars {
@@ -152,7 +129,7 @@ import testimonialsData from '../data/testimonials.json';
     display: inline-block;
   }
 
-  /* ── Testimonial text — truncated to keep cards compact ── */
+  /* ── Testimonial text ── */
   .testimonial-text {
     color: rgba(255, 255, 255, 0.9);
     font-family: 'EB Garamond', serif;
@@ -160,7 +137,6 @@ import testimonialsData from '../data/testimonials.json';
     line-height: 1.55;
     font-style: italic;
     flex: 1;
-    /* Clamp to 5 lines on mobile */
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
@@ -225,22 +201,8 @@ import testimonialsData from '../data/testimonials.json';
     border-color: var(--color-gold, #c9a959);
   }
 
-  /* ── Desktop: single card per view, larger max-width ── */
+  /* ── Desktop ── */
   @media (min-width: 768px) {
-    .testimonials-section {
-      padding: 0;
-      overflow-x: clip;
-    }
-
-    .testimonial-card {
-      /*
-       * Desktop: single card per view, capped at 860px so there's a visible
-       * right-edge peek showing the next card (≈ 50px peek on a 1440px screen).
-       * vw-based so it resolves correctly irrespective of the flex parent chain.
-       */
-      flex: 0 0 min(860px, calc(100vw - 12rem));
-    }
-
     .testimonial-text {
       -webkit-line-clamp: 6;
       font-size: 1.05rem;
@@ -249,93 +211,42 @@ import testimonialsData from '../data/testimonials.json';
 </style>
 
 <script>
-  /**
-   * Testimonials carousel: dot sync, card-reveal animations, and continuous
-   * infinite-loop behaviour (wraps from last card back to first and vice-versa).
-   * The scene-hijack.js system manages the section's .text-reveal elements.
-   * Card animations (.card-reveal) are triggered here once the section enters
-   * the viewport via IntersectionObserver.
-   */
-  (function () {
-    var carousel = document.getElementById('testimonials-carousel');
-    var dotsContainer = document.getElementById('testimonials-dots');
-    if (!carousel || !dotsContainer) return;
+  import EmblaCarousel from 'embla-carousel';
 
-    var dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
-    var cards = Array.from(carousel.querySelectorAll('.testimonial-card'));
+  const emblaNode = document.getElementById('testimonials-embla');
+  const dotsContainer = document.getElementById('testimonials-dots');
+  if (emblaNode && dotsContainer) {
+    const embla = EmblaCarousel(emblaNode, { loop: true, align: 'start' });
+    const dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
 
-    // ── Ensure carousel always starts at card 1 ──
-    requestAnimationFrame(function () {
-      carousel.scrollLeft = 0;
-    });
-
-    // ── Active-dot tracking ──
-    var rafId = null;
-    function updateActiveDot() {
-      if (!cards.length) return;
-      var cardWidth = cards[0].getBoundingClientRect().width;
-      // Read the actual gap from computed styles to stay in sync with CSS.
-      var gap = parseFloat(getComputedStyle(carousel).columnGap) || 20;
-      var idx = Math.round(carousel.scrollLeft / (cardWidth + gap));
-      idx = Math.max(0, Math.min(idx, dots.length - 1));
-      dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+    function syncDots() {
+      const idx = embla.selectedScrollSnap();
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
     }
 
-    carousel.addEventListener('scroll', function () {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(updateActiveDot);
-    }, { passive: true });
+    embla.on('select', syncDots);
+    embla.on('reInit', syncDots);
 
-    // ── Dot click → scroll to card ──
-    dots.forEach(function (dot, i) {
-      dot.addEventListener('click', function () {
-        var card = cards[i];
-        if (!card) return;
-        card.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-      });
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => embla.scrollTo(i));
     });
 
-    // ── Continuous (infinite loop) via touch swipe ──
-    // When the user swipes past the last card, wrap to the first; when swiping
-    // back past the first card, wrap to the last.
-    var touchStartX = 0;
-    carousel.addEventListener('touchstart', function (e) {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    carousel.addEventListener('touchend', function (e) {
-      var dx = touchStartX - e.changedTouches[0].clientX;
-      var cardWidth = cards[0] ? cards[0].getBoundingClientRect().width : 0;
-      var gap = parseFloat(getComputedStyle(carousel).columnGap) || 20;
-      var maxScroll = (cards.length - 1) * (cardWidth + gap);
-
-      // At last card swiping left (forward) → wrap to first
-      if (dx > 30 && carousel.scrollLeft >= maxScroll - 5) {
-        carousel.scrollTo({ left: 0, behavior: 'smooth' });
-      }
-      // At first card swiping right (backward) → wrap to last
-      if (dx < -30 && carousel.scrollLeft < 5) {
-        var lastCard = cards[cards.length - 1];
-        if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-      }
-    }, { passive: true });
-
     // ── Card reveal via IntersectionObserver ──
-    var sectionEl = document.getElementById('testimonials');
+    const cards = Array.from(emblaNode.querySelectorAll('.testimonial-card'));
+    const sectionEl = document.getElementById('testimonials');
     if (sectionEl && 'IntersectionObserver' in window) {
-      var obs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            cards.forEach(function (c) { c.classList.add('visible'); });
+            cards.forEach((c) => c.classList.add('visible'));
             obs.disconnect();
           }
         });
       }, { threshold: 0.2 });
       obs.observe(sectionEl);
     } else if (sectionEl) {
-      // Fallback: reveal immediately
-      cards.forEach(function (c) { c.classList.add('visible'); });
+      cards.forEach((c) => c.classList.add('visible'));
     }
-  })();
+  }
 </script>
 
