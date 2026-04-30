@@ -1,20 +1,53 @@
-# Mikey Sleighthand
+# Mikey Sleighthand — San Diego Magician
 
-> San Diego magician specializing in refined close-up magic and live event entertainment.
+> San Diego's premier close-up magician, recognized in magic circles as one of the most mystifying sleight of hand artists performing today at ther edge of the modern frontier.
 
-Mikey Sleighthand performs polished sleight of hand and intimate magic experiences for corporate events and weddings in San Diego or any destination. Investment: $5,000 per event (up to 2 hours). Travel arrangements available.
+## About
 
-## Website Scope
+Mikey Sleighthand is a San Diego magician known as the Gentleman Magician of the Modern Frontier. With steady hands and a watchful eye, he creates intimate, unforgettable moments of wonder through precision sleight of hand. In the San Diego magic community and beyond, Mikey is recognized as one of the most skilled and mystifying sleight of hand artists working today. As a master magician, he is affiliated with The Parlor, regarded as the most secret magic society in the world.
 
-This website is a single landing page focused on booking inquiries.
+Every movement is deliberate, every pause meaningful, and every reveal impossible to explain. A deck of cards, a few coins — in Mikey's hands, simple objects become instruments of wonder, vanishing and reappearing as if ruled by unseen law. There is no stage, no curtain, no distance. Mikey brings the impossible to your table, your guests, and your event — close enough to inspect and still beyond explanation.
 
-## Page
+## Services
 
-- [Home](https://www.mikeysleighthand.com/): Hero, service highlights, and booking contact form.
+Mikey Sleighthand offers strolling close-up magic for corporate events, weddings, and distinguished gatherings across San Diego or any destination. Each booking includes up to two hours of intimate sleight of hand performance, where Mikey circulates among guests engaging small groups of 3–8 people at a time with cards, coins, and everyday objects.
+
+- **Investment:** $5,000 per event (up to 2 hours of performance)
+- **Event types:** Corporate holiday parties, product launches, networking receptions, executive dinners, team-building events, trade shows, client appreciation gatherings, wedding cocktail hours, and receptions
+- **Customization:** Performances can incorporate company branding or event-specific themes
+- **Travel:** Based in San Diego, available for any destination — Southern California, nationwide, or international
+
+## San Diego Service Areas
+
+Mikey Sleighthand serves all of San Diego County including La Jolla, Del Mar, Coronado, Gaslamp Quarter, North Park, Downtown San Diego, Carlsbad, and Encinitas. Travel arrangements available for events beyond San Diego.
+
+## Why Close-Up Magic
+
+Close-up magic excels where stage performances cannot reach. At corporate events, it breaks the ice between colleagues and clients, creating shared moments that strengthen professional bonds. At weddings, it fills natural lulls — cocktail hour, dinner service — with engaging entertainment that brings people together and generates the "did you see that?" stories guests share long after the event.
+
+## What Clients Say
+
+- "We hired Mikey for our company holiday party… He walked around doing close-up magic during dinner and I watched our CFO — who never smiles — absolutely lose it when a card appeared in his wallet." — David Chen, Biotech Innovations SD
+- "Mikey was at our wedding doing magic during cocktail hour… My aunt called me the next day just to talk about him — she made him repeat a trick three times and still couldn't figure it out." — Rachel & Tom
+- "I was skeptical about hiring a magician for our client appreciation dinner… One of our newer clients said it was the best corporate event he'd been to." — Jennifer M., Pacific Coast Ventures
+- "He did this thing with my wedding ring that I still can't explain. Our photographer got some great shots of people's reactions." — Mike S.
+
+## Booking
+
+For corporate events and weddings, booking 2–3 months in advance is recommended. Peak seasons (holiday parties November–December, wedding season May–October) often fill 4–6 months ahead. Last-minute availability may be possible — reach out to inquire.
+
+Use the booking form on the homepage to request availability and event details.
+
+## Website
+
+This is a single landing page focused on booking inquiries.
+
+- [Home](https://www.mikeysleighthand.com/): About, services, testimonials, FAQ, and booking contact form.
 
 ## Contact
 
-Use the booking form on the homepage to request availability and event details.
+- **Website:** [mikeysleighthand.com](https://www.mikeysleighthand.com/)
+- **Booking:** Use the contact form on the homepage
 
 ## Location
 
