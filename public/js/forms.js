@@ -104,6 +104,19 @@ function initContactForm() {
       return "Event date is required";
     }
     
+    // Check if date is valid and in the future
+    const selectedDate = new Date(eventDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day
+    
+    if (isNaN(selectedDate.getTime())) {
+      return "Please enter a valid date";
+    }
+    
+    if (selectedDate < today) {
+      return "Event date must be in the future";
+    }
+    
     return "";
   }
 
@@ -272,10 +285,10 @@ function initContactForm() {
 
     // Collect form data and submit to Netlify
     const params = new URLSearchParams(new FormData(contactForm));
-    params.set("form-name", "contact");
+    params.append("form-name", "contact");
     const formData = params.toString();
 
-    fetch("/", {
+    fetch("/__forms.html", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: formData,
