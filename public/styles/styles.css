@@ -1593,6 +1593,9 @@ footer {
     font-size: 1rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 /* Add error styling for form inputs */
@@ -1616,18 +1619,30 @@ footer {
     color: #888;
 }
 
-/* Ensure date input and select match other inputs */
-.form-group input[type="date"],
+/* Ensure select matches other inputs */
 .form-group select {
     color: #fff;
     background-color: var(--color-bg-card, #141414);
-    color-scheme: dark;
 }
 
-/* Style the calendar icon for date inputs */
-.form-group input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-    cursor: pointer;
+/* Placeholder state for select */
+.form-group select:invalid,
+.form-group select option[disabled] {
+    color: #888;
+}
+
+.form-group select option {
+    color: #fff;
+    background-color: var(--color-bg-card, #141414);
+}
+
+/* Helper text below inputs */
+.helper-text {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 4px;
+    font-style: italic;
 }
 
 /* Style select dropdown arrow */

@@ -28,7 +28,8 @@
 
                 <div class="form-group">
                     <label for="eventDate">Event Date</label>
-                    <input type="date" id="eventDate" name="eventDate" required>
+                    <input type="text" id="eventDate" name="eventDate" placeholder="MM/DD/YYYY or approximate date" required>
+                    <span class="helper-text">Exact or approximate date is fine</span>
                     <span class="error-message" id="eventDate-error"></span>
                 </div>
 
@@ -41,7 +42,8 @@
                 <div class="form-group">
                     <label for="service">Service</label>
                     <select id="service" name="service" required>
-                        <option value="strolling-magic">Strolling magic $5000</option>
+                        <option value="" disabled selected>Select a Service</option>
+                        <option value="strolling-magic">Strolling Magic — $5,000</option>
                     </select>
                     <span class="error-message" id="service-error"></span>
                 </div>

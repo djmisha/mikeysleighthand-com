@@ -104,19 +104,6 @@ function initContactForm() {
       return "Event date is required";
     }
     
-    // Check if date is valid and in the future
-    const selectedDate = new Date(eventDate);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to start of day
-    
-    if (isNaN(selectedDate.getTime())) {
-      return "Please enter a valid date";
-    }
-    
-    if (selectedDate < today) {
-      return "Event date must be in the future";
-    }
-    
     return "";
   }
 
