@@ -61,24 +61,28 @@ import testimonialsData from '../data/testimonials.json';
   .testimonials-section {
     padding: 0;
     /*
-     * Prevent the carousel's scroll-width from widening the document on mobile,
-     * which causes the heading and sub-headline to appear clipped on the right.
+     * overflow-x: clip clips the carousel overflow without creating a BFC or a
+     * new scroll-container context (unlike overflow-x: hidden).  This prevents
+     * the carousel's scroll-width from widening the document while leaving the
+     * inner snap-scroll carousel fully functional.
      */
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
-  /* Wrapper constrains the carousel and dots together */
+  /* Wrapper — no overflow set here; clipping is handled by the section.
+   * width:100% ensures the inner carousel's percentage widths resolve correctly
+   * even though .container is a flex item inside .scene-section (display:flex). */
   .testimonials-carousel-wrap {
     position: relative;
     margin-top: 1.5rem;
-    overflow-x: hidden;
-    overflow-y: visible;
+    width: 100%;
   }
 
   /* ── Carousel track ── */
   .testimonials-carousel {
     display: flex;
     flex-wrap: nowrap;               /* always single-row */
+    width: 100%;                     /* needed so card's calc(100%-X) resolves */
     gap: 1.25rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -94,10 +98,15 @@ import testimonialsData from '../data/testimonials.json';
     display: none;
   }
 
-  /* ── Card ── */
+  /* ── Card — single card per view ── */
   .testimonial-card {
-    /* mobile: ~1 visible; vw-based so it never causes horizontal document overflow */
-    flex: 0 0 min(320px, calc(82vw - 2rem));
+    /*
+     * vw-based width so the card size resolves correctly regardless of the
+     * flex parent chain width ambiguity.
+     * On 390px mobile: 100vw - 7rem ≈ 278px.  Container content ≈ 342px.
+     * Peek ≈ 44px of the next card — clear hint that there are more cards.
+     */
+    flex: 0 0 calc(100vw - 7rem);
     min-width: 0;
     scroll-snap-align: start;
     background: rgba(20, 20, 20, 0.82);
@@ -217,16 +226,20 @@ import testimonialsData from '../data/testimonials.json';
     border-color: var(--color-gold, #c9a959);
   }
 
-  /* ── Desktop: 2 cards visible ── */
+  /* ── Desktop: single card per view, larger max-width ── */
   @media (min-width: 768px) {
     .testimonials-section {
       padding: 0;
-      overflow-x: hidden;
+      overflow-x: clip;
     }
 
     .testimonial-card {
-      /* ~2 visible; vw-based to stay within the viewport */
-      flex: 0 0 min(440px, 42vw);
+      /*
+       * Desktop: single card per view, capped at 860px so there's a visible
+       * right-edge peek showing the next card (≈ 50px peek on a 1440px screen).
+       * vw-based so it resolves correctly irrespective of the flex parent chain.
+       */
+      flex: 0 0 min(860px, calc(100vw - 12rem));
     }
 
     .testimonial-text {

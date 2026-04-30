@@ -58,26 +58,26 @@ import faqData from '../data/faq.json';
   .faq-section {
     padding: 0;
     /*
-     * Prevent the carousel's scroll-width from widening the document on mobile.
-     * Without this, the browser can measure the document wider than the viewport,
-     * which causes headings and subtitles to appear cut off on the right.
+     * overflow-x: clip clips the carousel overflow without creating a BFC or a
+     * new scroll-container context (unlike overflow-x: hidden).  This prevents
+     * the carousel's scroll-width from widening the document while leaving the
+     * inner snap-scroll carousel fully functional and starting at card 1.
      */
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
-  /* ── Carousel wrap ── */
+  /* ── Carousel wrap — no overflow here; section handles clipping.
+   * width:100% ensures the inner carousel's percentage widths resolve correctly. */
   .faq-carousel-wrap {
     margin-top: 1.5rem;
-    /* Hard-stop any overflow that slips past the section boundary */
-    overflow-x: hidden;
-    /* Required so the inner carousel's scroll still works */
-    overflow-y: visible;
+    width: 100%;
   }
 
   /* ── Carousel track ── */
   .faq-carousel {
     display: flex;
     flex-wrap: nowrap;           /* always single-row — explicit to prevent wrapping */
+    width: 100%;                 /* needed so card's calc(100%-X) resolves */
     gap: 1rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -210,7 +210,7 @@ import faqData from '../data/faq.json';
   /* ── Desktop: 3 cards visible ── */
   @media (min-width: 768px) {
     .faq-section {
-      overflow-x: hidden;
+      overflow-x: clip;
     }
 
     .faq-card {
