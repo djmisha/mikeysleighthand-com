@@ -2,141 +2,284 @@
 import testimonialsData from '../data/testimonials.json';
 ---
 
+<!--
+  Testimonials — horizontal snap-scroll carousel
+  ──────────────────────────────────────────────
+  Displays testimonial cards in a single-row carousel that can be swiped
+  horizontally on both mobile and desktop.  This keeps the section within
+  one full-screen scene regardless of viewport size.
+
+  Mobile:  ~1 card visible at a time (85% card width), swipe to advance.
+  Desktop: ~2 cards visible at a time (46% card width), scroll or click dots.
+
+  The <section> carries the scene-section class so scroll-hijack.js manages
+  the enter/exit animations of h2 and .section-intro via .text-reveal.
+  Carousel cards use a lightweight .card-reveal class instead of .text-reveal
+  so they are not affected by the scene transition stagger logic.
+-->
 <section id="testimonials" class="testimonials-section scene-section scene-scroll">
   <div class="container">
     <h2 class="text-reveal">What Clients Say</h2>
     <p class="section-intro text-reveal">
       Testimonials from corporate events and weddings across San Diego and beyond.
     </p>
-    <div class="testimonials-grid">
-      {testimonialsData.map((testimonial) => (
-        <div class="testimonial-card float-up-item">
-          <div class="stars" aria-label={`${testimonial.rating} out of 5 stars`}>
-            {[...Array(testimonial.rating)].map(() => (
-              <span class="star">★</span>
-            ))}
-          </div>
-          <p class="testimonial-text">"{testimonial.reviewBody}"</p>
-          <div class="testimonial-author">
-            <p class="author-name">{testimonial.author}</p>
-            {testimonial.company && <p class="author-company">{testimonial.company}</p>}
-            <p class="event-type">{testimonial.eventType === 'corporate' ? 'Corporate Event' : 'Wedding'}</p>
-          </div>
-        </div>
-      ))}
+
+    <div class="testimonials-carousel-wrap">
+      <div class="testimonials-carousel" id="testimonials-carousel" role="list">
+        {testimonialsData.map((testimonial) => (
+          <article class="testimonial-card card-reveal" role="listitem">
+            <div class="stars" aria-label={`${testimonial.rating} out of 5 stars`}>
+              {[...Array(testimonial.rating)].map(() => (
+                <span class="star" aria-hidden="true">★</span>
+              ))}
+            </div>
+            <p class="testimonial-text">"{testimonial.reviewBody}"</p>
+            <div class="testimonial-author">
+              <p class="author-name">{testimonial.author}</p>
+              {testimonial.company && <p class="author-company">{testimonial.company}</p>}
+              <p class="event-type">{testimonial.eventType === 'corporate' ? 'Corporate Event' : 'Wedding'}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Dot navigation -->
+      <div class="carousel-dots" id="testimonials-dots" aria-label="Testimonial navigation">
+        {testimonialsData.map((_, i) => (
+          <button
+            class={`carousel-dot${i === 0 ? ' active' : ''}`}
+            data-index={i}
+            aria-label={`Go to testimonial ${i + 1}`}
+          ></button>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .testimonials-section {
-    padding: 6rem 0;
-    background: rgba(10, 10, 10, 0.4);
+    padding: 0;
   }
 
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
+  /* Wrapper constrains the carousel and dots together */
+  .testimonials-carousel-wrap {
+    position: relative;
+    margin-top: 1.5rem;
   }
 
+  /* ── Carousel track ── */
+  .testimonials-carousel {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;          /* Firefox */
+    -ms-overflow-style: none;       /* IE / Edge */
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+    /* Allow touch swipe without triggering page scroll */
+    touch-action: pan-x;
+  }
+
+  .testimonials-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ── Card ── */
   .testimonial-card {
-    background: rgba(20, 20, 20, 0.8);
+    flex: 0 0 calc(85% - 0.625rem);   /* mobile: ~1 visible */
+    scroll-snap-align: start;
+    background: rgba(20, 20, 20, 0.82);
     border: 1px solid rgba(201, 169, 89, 0.3);
     border-radius: 8px;
-    padding: 2rem;
-    transition: all 0.3s ease;
+    padding: 1.5rem;
+    transition: border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
-  /* Float-up animation */
-  .float-up-item {
+  .testimonial-card:hover {
+    border-color: rgba(201, 169, 89, 0.65);
+  }
+
+  /* Card enter animation (driven by scroll-hijack scene enter) */
+  .card-reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateY(16px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
   }
 
-  .float-up-item.animated {
+  .card-reveal.visible {
     opacity: 1;
     transform: translateY(0);
   }
 
-  /* Staggered delays for testimonials */
-  .testimonial-card:nth-child(1) { transition-delay: 0.1s; }
-  .testimonial-card:nth-child(2) { transition-delay: 0.2s; }
-  .testimonial-card:nth-child(3) { transition-delay: 0.3s; }
-  .testimonial-card:nth-child(4) { transition-delay: 0.4s; }
+  /* Staggered card appearance */
+  .testimonial-card:nth-child(1).card-reveal { transition-delay: 0.3s; }
+  .testimonial-card:nth-child(2).card-reveal { transition-delay: 0.38s; }
+  .testimonial-card:nth-child(3).card-reveal { transition-delay: 0.46s; }
+  .testimonial-card:nth-child(4).card-reveal { transition-delay: 0.54s; }
 
-  .testimonial-card:hover {
-    border-color: rgba(201, 169, 89, 0.7);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(201, 169, 89, 0.15);
-  }
-
+  /* ── Stars ── */
   .stars {
     color: var(--color-gold, #c9a959);
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    letter-spacing: 0.25rem;
+    font-size: 1rem;
+    letter-spacing: 0.2rem;
+    flex-shrink: 0;
   }
 
   .star {
     display: inline-block;
   }
 
+  /* ── Testimonial text — truncated to keep cards compact ── */
   .testimonial-text {
     color: rgba(255, 255, 255, 0.9);
     font-family: 'EB Garamond', serif;
-    font-size: 1.125rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.55;
     font-style: italic;
-    margin-bottom: 1.5rem;
+    flex: 1;
+    /* Clamp to 5 lines on mobile */
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
   }
 
+  /* ── Author block ── */
   .testimonial-author {
     border-top: 1px solid rgba(201, 169, 89, 0.2);
-    padding-top: 1rem;
+    padding-top: 0.75rem;
+    flex-shrink: 0;
   }
 
   .author-name {
     color: var(--color-gold, #c9a959);
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
+    line-height: 1.2;
   }
 
   .author-company {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.65);
     font-family: 'EB Garamond', serif;
-    font-size: 0.95rem;
-    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.15rem;
+    line-height: 1.2;
   }
 
   .event-type {
     color: rgba(201, 169, 89, 0.8);
     font-family: 'EB Garamond', serif;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     font-style: italic;
     margin: 0;
+    line-height: 1.2;
   }
 
-  @media (max-width: 768px) {
-    .testimonials-section {
-      padding: 4rem 0;
-    }
+  /* ── Navigation dots ── */
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
 
-    .testimonials-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 169, 89, 0.5);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+
+  .carousel-dot.active {
+    background: var(--color-gold, #c9a959);
+    border-color: var(--color-gold, #c9a959);
+  }
+
+  /* ── Desktop: 2 cards visible ── */
+  @media (min-width: 768px) {
+    .testimonials-section {
+      padding: 0;
     }
 
     .testimonial-card {
-      padding: 1.5rem;
+      flex: 0 0 calc(46% - 0.625rem);
     }
 
     .testimonial-text {
-      font-size: 1rem;
+      -webkit-line-clamp: 6;
+      font-size: 1.05rem;
     }
   }
 </style>
+
+<script>
+  /**
+   * Testimonials carousel: dot sync + card-reveal animations.
+   * The scene-hijack.js system manages the section's .text-reveal elements.
+   * Card animations (.card-reveal) are triggered here once the section enters
+   * the viewport via IntersectionObserver.
+   */
+  (function () {
+    var carousel = document.getElementById('testimonials-carousel');
+    var dotsContainer = document.getElementById('testimonials-dots');
+    if (!carousel || !dotsContainer) return;
+
+    var dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
+    var cards = Array.from(carousel.querySelectorAll('.testimonial-card'));
+
+    // ── Active-dot tracking ──
+    var rafId = null;
+    function updateActiveDot() {
+      if (!cards.length) return;
+      var cardWidth = cards[0].getBoundingClientRect().width;
+      var gap = 20; // matches 1.25rem gap
+      var idx = Math.round(carousel.scrollLeft / (cardWidth + gap));
+      idx = Math.max(0, Math.min(idx, dots.length - 1));
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+    }
+
+    carousel.addEventListener('scroll', function () {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateActiveDot);
+    }, { passive: true });
+
+    // ── Dot click → scroll to card ──
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () {
+        var card = cards[i];
+        if (!card) return;
+        card.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      });
+    });
+
+    // ── Card reveal via IntersectionObserver ──
+    var sectionEl = document.getElementById('testimonials');
+    if (sectionEl && 'IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            cards.forEach(function (c) { c.classList.add('visible'); });
+            obs.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+      obs.observe(sectionEl);
+    } else if (sectionEl) {
+      // Fallback: reveal immediately
+      cards.forEach(function (c) { c.classList.add('visible'); });
+    }
+  })();
+</script>
+

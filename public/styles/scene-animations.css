@@ -24,15 +24,14 @@
  * transition-delay: 0s  — cancels the stagger delay classes
  *                         (text-reveal-delay-1/2/3) so all elements exit
  *                         at exactly the same moment.
- * transition-duration: 0.55s — slightly faster than the 0.8s enter duration
- *                         to keep the exit snappy while remaining smooth.
+ * transition-duration: 0.3s — fast, snappy exit.
  *
  * Both rules use !important to override the delay/duration on the base
  * .text-reveal class and all .text-reveal-delay-N utility classes.
  */
 .text-reveal.exiting {
   transition-delay: 0s !important;
-  transition-duration: 0.55s !important;
+  transition-duration: 0.3s !important;
 }
 
 /**
@@ -48,9 +47,24 @@ body.scene-hijack-ready {
 }
 
 /**
- * Ensure the scroll behaviour is instant (no native smooth-scroll
- * interference) when the hijack is controlling navigation.
+ * Disable native smooth-scroll so scroll-hijack.js's own easing is the only
+ * scroll animation applied.
  */
 html {
   scroll-behavior: auto;
+}
+
+/**
+ * Page-entry fade: <body> starts invisible and reveals on first paint.
+ * JS removes this class immediately so the transition fires once per load.
+ * This prevents any flash of the previous-page content on manual reload.
+ * The body background is #0a0a0a so the "invisible" state appears as a
+ * clean black frame rather than blank white.
+ */
+body.page-loading {
+  opacity: 0;
+}
+
+body {
+  transition: opacity 0.25s ease-out;
 }

@@ -70,44 +70,44 @@
     /**
      * How long to wait (ms) after triggering the exit animation before
      * scrolling to the next scene. Should be ≥ the .exiting transition
-     * duration defined in scene-animations.css (currently 0.55s = 550ms).
+     * duration defined in scene-animations.css (currently 0.3s = 300ms).
      */
-    exitDuration:   600,
+    exitDuration:   350,
 
     /** Duration (ms) of the smooth viewport-scroll animation. */
-    scrollDuration: 600,
+    scrollDuration: 380,
 
     /**
      * Pause (ms) between the scroll completing and the enter animation starting.
-     * Gives the user a brief "blank scene" moment that enhances the magic feel.
+     * A brief "blank scene" moment that enhances the magic feel.
      */
-    enterDelay:     120,
+    enterDelay:     50,
 
     /**
      * Minimum milliseconds between successive scene transitions.
      * Prevents accidental double-triggers from trackpad momentum or fast swipes.
      */
-    cooldown:      1700,
+    cooldown:      1000,
 
     /** Minimum finger travel (px) on touchscreen to trigger a scene change. */
     touchThreshold:  45,
 
     /** Number of sparkle particles spawned per scene-change burst. */
-    particleCount:   24,
+    particleCount:   32,
 
     /**
      * Delay (ms) after DOMContentLoaded before the first scene reveals itself.
      * This produces the "blank, then magical appearance" effect on page load.
      */
-    initialDelay:   700,
+    initialDelay:   500,
 
     /**
      * Buffer (ms) added after the longest stagger delay when waiting for enter
-     * animations to complete.  Components: CSS transition duration (800ms from
-     * .text-reveal in styles.css) + 50ms safety buffer = 850ms.
+     * animations to complete.  Components: CSS transition duration (500ms from
+     * .text-reveal in styles.css) + 60ms safety buffer = 560ms.
      * If the CSS transition duration changes, update this value accordingly.
      */
-    enterCallbackBuffer: 850,
+    enterCallbackBuffer: 560,
 
     /**
      * Viewport-alignment tolerance (px).  The hijack only activates when the
@@ -127,17 +127,17 @@
   /**
    * Stagger delay values (ms) that MUST match the CSS transition-delay-N
    * utility classes defined in styles.css:
-   *   .text-reveal-delay-1 { transition-delay: 0.15s; }
-   *   .text-reveal-delay-2 { transition-delay: 0.30s; }
-   *   .text-reveal-delay-3 { transition-delay: 0.45s; }
+   *   .text-reveal-delay-1 { transition-delay: 0.08s; }
+   *   .text-reveal-delay-2 { transition-delay: 0.16s; }
+   *   .text-reveal-delay-3 { transition-delay: 0.24s; }
    *
    * If either the CSS values or these JS values change, both must be kept in
    * sync or the enter-animation callback will fire at the wrong time.
    */
   var STAGGER_DELAYS = {
-    'text-reveal-delay-1': 150,
-    'text-reveal-delay-2': 300,
-    'text-reveal-delay-3': 450,
+    'text-reveal-delay-1':  80,
+    'text-reveal-delay-2': 160,
+    'text-reveal-delay-3': 240,
   };
 
   // ── State ────────────────────────────────────────────────────────────────────
@@ -165,6 +165,17 @@
 
     // Hide native scrollbar — the hijack replaces it completely
     document.body.classList.add('scene-hijack-ready');
+
+    // Page-entry fade: briefly hold opacity:0, then fade in on next paint.
+    // This hides any flash of stale content visible during a manual reload.
+    // We add the class here (not statically in HTML) so the page degrades
+    // gracefully if JS is unavailable.
+    document.body.classList.add('page-loading');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        document.body.classList.remove('page-loading');
+      });
+    });
 
     bindAll();
 
@@ -444,19 +455,44 @@
   // ── Particle burst ─────────────────────────────────────────────────────────────
 
   /**
-   * Spawns a brief shower of gold and white sparkle-rain particles using the
-   * .magic-transition-overlay infrastructure from transitions.css.
-   * Particle count is halved on mobile to preserve performance.
+   * Returns (creating on first call) a transparent fixed-position container
+   * that sits above all scene content but below ParlourOverlay overlays.
+   * z-index 9999 places it above scenes, hero sparkles, and particles-js (999)
+   * but below the overlay stack which starts at 10100.
+   *
+   * Using a dedicated transparent layer (rather than the .magic-transition-overlay
+   * which has a black background) means sparkles appear on top of the scene
+   * transition while the background change is visible underneath.
+   */
+  function getParticleLayer() {
+    var el = document.getElementById('scene-particle-layer');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'scene-particle-layer';
+      el.setAttribute('aria-hidden', 'true');
+      el.style.cssText = [
+        'position:fixed',
+        'top:0',
+        'left:0',
+        'width:100%',
+        'height:100%',
+        'z-index:9999',
+        'pointer-events:none',
+        'background:transparent',
+        'overflow:hidden',
+      ].join(';');
+      document.body.appendChild(el);
+    }
+    return el;
+  }
+
+  /**
+   * Spawns a brief shower of gold and white sparkle-rain particles that float
+   * on top of the scene transition.  Particle count is halved on mobile to
+   * preserve performance.
    */
   function triggerParticleBurst() {
-    var overlay = document.querySelector('.magic-transition-overlay');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.className = 'magic-transition-overlay';
-      document.body.appendChild(overlay);
-    }
-
-    overlay.classList.add('active');
+    var layer = getParticleLayer();
 
     var count = window.innerWidth < CONFIG.mobileBreakpoint
       ? Math.ceil(CONFIG.particleCount / 2)
@@ -467,22 +503,20 @@
         setTimeout(function () {
           var s   = document.createElement('div');
           s.className = 'sparkle-rain';
-          var size    = (1.5 + Math.random() * 2.5) + 'px';
+          var size    = (1.5 + Math.random() * 3) + 'px';
           s.style.left    = (Math.random() * 100) + '%';
+          s.style.top     = (Math.random() * 40) + '%'; // spread vertically too
           s.style.width   = size;
           s.style.height  = size;
           s.style.background = Math.random() > 0.45 ? '#ffd700' : '#ffffff';
-          s.style.setProperty('--fall-distance', (80 + Math.random() * 180) + 'px');
-          s.style.setProperty('--drift-x',       ((Math.random() - 0.5) * 80) + 'px');
-          s.style.setProperty('--fall-duration',  (0.4 + Math.random() * 0.6) + 's');
-          overlay.appendChild(s);
-          setTimeout(function () { if (s.parentNode) s.remove(); }, 1200);
-        }, idx * 20);
+          s.style.setProperty('--fall-distance', (80 + Math.random() * 200) + 'px');
+          s.style.setProperty('--drift-x',       ((Math.random() - 0.5) * 100) + 'px');
+          s.style.setProperty('--fall-duration',  (0.35 + Math.random() * 0.5) + 's');
+          layer.appendChild(s);
+          setTimeout(function () { if (s.parentNode) s.remove(); }, 1000);
+        }, idx * 15);
       })(i);
     }
-
-    // Hide the overlay background after the burst
-    setTimeout(function () { overlay.classList.remove('active'); }, 400);
   }
 
   // ── Event bindings ────────────────────────────────────────────────────────────
