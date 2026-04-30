@@ -142,12 +142,13 @@
 
   // ── State ────────────────────────────────────────────────────────────────────
 
-  var scenes          = [];    // Ordered .scene-section elements
-  var currentIndex    = 0;     // Index of the scene currently filling the viewport
-  var isTransitioning = false; // Locked during active transitions
-  var lastScrollTime  = 0;     // Timestamp of the last completed transition start
-  var touchStartY     = 0;     // Y position at the start of a touch gesture
-  var prefersReduced  = false; // True when user prefers-reduced-motion
+  var scenes             = [];    // Ordered .scene-section elements
+  var currentIndex       = 0;     // Index of the scene currently filling the viewport
+  var isTransitioning    = false; // Locked during active transitions
+  var lastScrollTime     = 0;     // Timestamp of the last completed transition start
+  var touchStartY        = 0;     // Y position at the start of a touch gesture
+  var prefersReduced     = false; // True when user prefers-reduced-motion
+  var transitionSafetyTimer = null; // Guards against isTransitioning getting stuck
 
   // ── Initialisation ───────────────────────────────────────────────────────────
 
@@ -257,6 +258,17 @@
     isTransitioning = true;
     lastScrollTime  = Date.now();
 
+    // Safety guard: if the transition hasn't completed within 4 seconds, force
+    // a reset so the page doesn't remain permanently stuck.
+    if (transitionSafetyTimer) clearTimeout(transitionSafetyTimer);
+    transitionSafetyTimer = setTimeout(function () {
+      if (isTransitioning) {
+        isTransitioning = false;
+        currentIndex = findClosestScene();
+        snapToScene(currentIndex);
+      }
+    }, 4000);
+
     var fromScene = scenes[currentIndex];
     var toScene   = scenes[targetIndex];
 
@@ -274,6 +286,10 @@
         setTimeout(function () {
           revealIn(toScene, direction, function () {
             isTransitioning = false;
+            if (transitionSafetyTimer) {
+              clearTimeout(transitionSafetyTimer);
+              transitionSafetyTimer = null;
+            }
           });
         }, CONFIG.enterDelay);
       });
@@ -515,9 +531,9 @@
           var fallDir = Math.random() > 0.5 ? 1 : -1;   // up or down
           s.style.setProperty('--fall-distance', (fallDir * (60 + Math.random() * 160)) + 'px');
           s.style.setProperty('--drift-x',       ((Math.random() - 0.5) * 140) + 'px');
-          s.style.setProperty('--fall-duration',  (0.3 + Math.random() * 0.55) + 's');
+          s.style.setProperty('--fall-duration',  (0.9 + Math.random() * 1.1) + 's');
           layer.appendChild(s);
-          setTimeout(function () { if (s.parentNode) s.remove(); }, 1000);
+          setTimeout(function () { if (s.parentNode) s.remove(); }, 2500);
         }, idx * 12);  // slightly faster stagger to feel more simultaneous
       })(i);
     }
@@ -538,10 +554,36 @@
 
     // Intercept anchor-link clicks that target scene sections
     document.addEventListener('click', onAnchorClick, true);
+
+    // Recovery: when the page becomes visible again after a hidden tab switch,
+    // check whether a transition was left mid-flight and recover if needed.
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && isTransitioning) {
+        // Allow a brief grace period for in-flight rAF/setTimeout callbacks to
+        // complete before forcing a reset.
+        setTimeout(function () {
+          if (isTransitioning) {
+            isTransitioning = false;
+            if (transitionSafetyTimer) { clearTimeout(transitionSafetyTimer); transitionSafetyTimer = null; }
+            currentIndex = findClosestScene();
+            snapToScene(currentIndex);
+          }
+        }, 600);
+      }
+    });
   }
 
   function onWheel(e) {
-    if (!isViewportAtScene()) return;
+    // Don't steal events that are primarily horizontal — these are meant for
+    // carousels (FAQ, Testimonials) that scroll left/right within a scene.
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+
+    if (!isViewportAtScene()) {
+      // Viewport has drifted away from the current scene (e.g. after an overlay
+      // or a stuck transition).  Snap back to the closest scene to recover.
+      recoverToClosestScene();
+      return;
+    }
     e.preventDefault();
     var dir = e.deltaY > 0 ? 'down' : 'up';
     navigate(currentIndex + (dir === 'down' ? 1 : -1), dir);
@@ -613,6 +655,18 @@
   }
 
   /**
+   * Snaps the viewport to the scene that is currently most visible and updates
+   * currentIndex.  Called when the viewport has drifted out of alignment with
+   * the active scene (e.g. after an overlay or a stuck/partial transition).
+   */
+  function recoverToClosestScene() {
+    if (isTransitioning) return;
+    var idx = findClosestScene();
+    currentIndex = idx;
+    snapToScene(idx);
+  }
+
+  /**
    * Returns the index of the scene that currently occupies the most viewport
    * space.  Used to initialise `currentIndex` at page load.
    */
@@ -633,6 +687,15 @@
     return bestIdx;
   }
 
+  /**
+   * Instantly snaps the viewport to the scene at `idx` without animation.
+   * Used by the recovery guard when a transition gets stuck.
+   */
+  function snapToScene(idx) {
+    if (!scenes[idx]) return;
+    window.scrollTo(0, scenes[idx].getBoundingClientRect().top + window.pageYOffset);
+  }
+
   // ── Public API ─────────────────────────────────────────────────────────────────
 
   window.SceneHijack = {
@@ -642,6 +705,13 @@
     getCurrentIndex: function () { return currentIndex; },
     /** Returns a shallow copy of the scenes array. */
     getScenes: function () { return scenes.slice(); },
+    /** Force-reset the transition lock (emergency recovery). */
+    reset: function () {
+      isTransitioning = false;
+      if (transitionSafetyTimer) { clearTimeout(transitionSafetyTimer); transitionSafetyTimer = null; }
+      currentIndex = findClosestScene();
+      snapToScene(currentIndex);
+    },
   };
 
   // ── Bootstrap ─────────────────────────────────────────────────────────────────

@@ -98,15 +98,14 @@ import testimonialsData from '../data/testimonials.json';
     display: none;
   }
 
-  /* ── Card — single card per view ── */
+  /* ── Card — single card per view, full width, no peek ── */
   .testimonial-card {
     /*
-     * vw-based width so the card size resolves correctly regardless of the
-     * flex parent chain width ambiguity.
-     * On 390px mobile: 100vw - 7rem ≈ 278px.  Container content ≈ 342px.
-     * Peek ≈ 44px of the next card — clear hint that there are more cards.
+     * 100% of the carousel container width = one card fills the visible area
+     * exactly on mobile, with no peeking of the next card.  The container
+     * has 20px side padding, so the card is viewport-width minus that padding.
      */
-    flex: 0 0 calc(100vw - 7rem);
+    flex: 0 0 100%;
     min-width: 0;
     scroll-snap-align: start;
     background: rgba(20, 20, 20, 0.82);
@@ -251,7 +250,8 @@ import testimonialsData from '../data/testimonials.json';
 
 <script>
   /**
-   * Testimonials carousel: dot sync + card-reveal animations.
+   * Testimonials carousel: dot sync, card-reveal animations, and continuous
+   * infinite-loop behaviour (wraps from last card back to first and vice-versa).
    * The scene-hijack.js system manages the section's .text-reveal elements.
    * Card animations (.card-reveal) are triggered here once the section enters
    * the viewport via IntersectionObserver.
@@ -263,6 +263,11 @@ import testimonialsData from '../data/testimonials.json';
 
     var dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
     var cards = Array.from(carousel.querySelectorAll('.testimonial-card'));
+
+    // ── Ensure carousel always starts at card 1 ──
+    requestAnimationFrame(function () {
+      carousel.scrollLeft = 0;
+    });
 
     // ── Active-dot tracking ──
     var rafId = null;
@@ -288,6 +293,31 @@ import testimonialsData from '../data/testimonials.json';
         card.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
       });
     });
+
+    // ── Continuous (infinite loop) via touch swipe ──
+    // When the user swipes past the last card, wrap to the first; when swiping
+    // back past the first card, wrap to the last.
+    var touchStartX = 0;
+    carousel.addEventListener('touchstart', function (e) {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', function (e) {
+      var dx = touchStartX - e.changedTouches[0].clientX;
+      var cardWidth = cards[0] ? cards[0].getBoundingClientRect().width : 0;
+      var gap = 20;
+      var maxScroll = (cards.length - 1) * (cardWidth + gap);
+
+      // At last card swiping left (forward) → wrap to first
+      if (dx > 30 && carousel.scrollLeft >= maxScroll - 5) {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+      // At first card swiping right (backward) → wrap to last
+      if (dx < -30 && carousel.scrollLeft < 5) {
+        var lastCard = cards[cards.length - 1];
+        if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      }
+    }, { passive: true });
 
     // ── Card reveal via IntersectionObserver ──
     var sectionEl = document.getElementById('testimonials');

@@ -263,7 +263,8 @@ import faqData from '../data/faq.json';
 
 <script>
   /**
-   * FAQ carousel: dot sync, card-reveal animations, and overlay trigger.
+   * FAQ carousel: dot sync, card-reveal animations, overlay trigger, and
+   * continuous infinite-loop behaviour.
    *
    * When a card is clicked, window.ParlourOverlay.open() is called with the
    * full question + answer HTML.  ParlourOverlay handles close button, ESC key,
@@ -281,6 +282,13 @@ import faqData from '../data/faq.json';
 
     var dots  = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
     var cards = Array.from(faqItems);
+
+    // ── Ensure carousel always starts at card 1 ──
+    // Force scroll-left to 0 after the first paint so the browser does not
+    // restore a non-zero position from a previous session.
+    requestAnimationFrame(function () {
+      carousel.scrollLeft = 0;
+    });
 
     // ── Active-dot tracking ──
     var rafId = null;
@@ -306,6 +314,31 @@ import faqData from '../data/faq.json';
         card.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
       });
     });
+
+    // ── Continuous (infinite loop) via touch swipe ──
+    // When the user swipes past the last card, wrap to the first; when swiping
+    // back past the first card, wrap to the last.
+    var touchStartX = 0;
+    carousel.addEventListener('touchstart', function (e) {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', function (e) {
+      var dx = touchStartX - e.changedTouches[0].clientX;
+      var cardWidth = cards[0] ? cards[0].getBoundingClientRect().width : 0;
+      var gap = 16;
+      var maxScroll = (cards.length - 1) * (cardWidth + gap);
+
+      // At last card swiping left (forward) → wrap to first
+      if (dx > 30 && carousel.scrollLeft >= maxScroll - 5) {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+      // At first card swiping right (backward) → wrap to last
+      if (dx < -30 && carousel.scrollLeft < 5) {
+        var lastCard = cards[cards.length - 1];
+        if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      }
+    }, { passive: true });
 
     // ── Card click → open ParlourOverlay with full answer ──
     cards.forEach(function (card) {
