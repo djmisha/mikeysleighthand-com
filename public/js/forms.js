@@ -284,7 +284,9 @@ function initContactForm() {
     submitButton.classList.add("submitting");
 
     // Collect form data and submit to Netlify
-    const formData = new URLSearchParams(new FormData(contactForm)).toString();
+    const params = new URLSearchParams(new FormData(contactForm));
+    params.append("form-name", "contact");
+    const formData = params.toString();
 
     fetch("/__forms.html", {
       method: "POST",
@@ -308,11 +310,8 @@ function initContactForm() {
           responseParagraph.textContent =
             "Thank you for your booking request. We'll review your event details and get back to you within 24 hours.";
 
-          // Reset form on success
-          contactForm.reset();
-
-          // Reset the formInteracted state since we're starting fresh
-          formInteracted = false;
+          // Hide the form and show only the thank you message
+          contactForm.style.display = "none";
         } else {
           // Error message
           formResponse.classList.add("error");
