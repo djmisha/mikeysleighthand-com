@@ -22,26 +22,32 @@ function initContactForm() {
     return;
   }
 
-  const formResponse = document.getElementById("form-response");
-  const submitButton = document.getElementById("submit-button");
+  // Prevent duplicate initialization
+  if (contactForm.dataset.initialized) {
+    return;
+  }
+  contactForm.dataset.initialized = "true";
+
+  const formResponse = contactForm.parentElement.querySelector("#form-response") || document.getElementById("form-response");
+  const submitButton = contactForm.querySelector("#submit-button");
 
   // Get all the required form fields
-  const nameInput = document.getElementById("name");
-  const emailInput = document.getElementById("email");
-  const phoneInput = document.getElementById("phone");
-  const eventDateInput = document.getElementById("eventDate");
-  const venueInput = document.getElementById("venue");
-  const serviceInput = document.getElementById("service");
-  const messageInput = document.getElementById("message");
+  const nameInput = contactForm.querySelector("#name");
+  const emailInput = contactForm.querySelector("#email");
+  const phoneInput = contactForm.querySelector("#phone");
+  const eventDateInput = contactForm.querySelector("#eventDate");
+  const venueInput = contactForm.querySelector("#venue");
+  const serviceInput = contactForm.querySelector("#service");
+  const messageInput = contactForm.querySelector("#message");
 
   // Get all error message elements
-  const nameError = document.getElementById("name-error");
-  const emailError = document.getElementById("email-error");
-  const phoneError = document.getElementById("phone-error");
-  const eventDateError = document.getElementById("eventDate-error");
-  const venueError = document.getElementById("venue-error");
-  const serviceError = document.getElementById("service-error");
-  const messageError = document.getElementById("message-error");
+  const nameError = contactForm.querySelector("#name-error");
+  const emailError = contactForm.querySelector("#email-error");
+  const phoneError = contactForm.querySelector("#phone-error");
+  const eventDateError = contactForm.querySelector("#eventDate-error");
+  const venueError = contactForm.querySelector("#venue-error");
+  const serviceError = contactForm.querySelector("#service-error");
+  const messageError = contactForm.querySelector("#message-error");
 
   /**
    * Validation Functions
@@ -141,6 +147,7 @@ function initContactForm() {
    * Validate a single field and return if it has an error
    */
   function validateField(inputElement, errorElement, validationFn) {
+    if (!inputElement || !errorElement) return false;
     const value = inputElement.value;
     const errorMessage = validationFn(value);
     return displayFieldError(inputElement, errorElement, errorMessage);
@@ -226,11 +233,11 @@ function initContactForm() {
     enableFieldValidation();
 
     // Clear previous errors
-    document
+    contactForm
       .querySelectorAll(".error-message")
       .forEach((el) => (el.textContent = ""));
-    document
-      .querySelectorAll("input, textarea")
+    contactForm
+      .querySelectorAll("input, textarea, select")
       .forEach((el) => el.classList.remove("error"));
 
     // Validate all fields
