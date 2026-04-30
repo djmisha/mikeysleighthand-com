@@ -191,6 +191,12 @@
         margin-left: auto;
         margin-right: auto;
     }
+
+    /* Tighten line-height for scene sub-headlines on mobile */
+    .scene-section .section-intro,
+    .scene-section .hero-subhead {
+        line-height: 1.2;
+    }
 }
 
 @media screen and (max-width: 900px) {

@@ -2,187 +2,360 @@
 import faqData from '../data/faq.json';
 ---
 
+<!--
+  FAQ — horizontal snap-scroll card carousel with ParlourOverlay answers
+  ─────────────────────────────────────────────────────────────────────────
+  Displays all FAQ questions as compact cards in a single-row horizontal
+  carousel.  Clicking/tapping a card opens the full question + answer in
+  the site's reusable ParlourOverlay (same overlay used for the contact form
+  and navigation menu).
+
+  This design fits the entire FAQ in one full-screen scene on both mobile
+  and desktop, consistent with the scroll-hijack single-scene layout.
+
+  Mobile:  ~1.6 cards visible, swipe to see more.
+  Desktop: ~3 cards visible, scroll or click dots.
+-->
 <section id="faq" class="faq-section scene-section scene-scroll">
   <div class="container">
     <h2 class="text-reveal">Frequently Asked Questions</h2>
     <p class="section-intro text-reveal">
       Common questions about booking a San Diego magician for corporate events and weddings.
     </p>
-    <div class="faq-list">
-      {faqData.map((item, index) => (
-        <div class="faq-item float-up-item" data-faq-index={index}>
-          <button class="faq-question" aria-expanded="false" aria-controls={`faq-answer-${index}`}>
-            <span>{item.question}</span>
-            <span class="faq-icon" aria-hidden="true">+</span>
+
+    <div class="faq-carousel-wrap">
+      <div class="faq-carousel" id="faq-carousel" role="list">
+        {faqData.map((item, index) => (
+          <button
+            class="faq-card card-reveal"
+            role="listitem"
+            data-faq-index={index}
+            data-answer={item.answer}
+            aria-label={`FAQ: ${item.question}`}
+          >
+            <span class="faq-card-num">0{index + 1}</span>
+            <span class="faq-card-question">{item.question}</span>
+            <span class="faq-card-cta" aria-hidden="true">Read Answer ›</span>
           </button>
-          <div class="faq-answer" id={`faq-answer-${index}`} hidden>
-            <p>{item.answer}</p>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
+
+      <!-- Dot navigation -->
+      <div class="carousel-dots faq-dots" id="faq-dots" aria-label="FAQ navigation">
+        {faqData.map((_, i) => (
+          <button
+            class={`carousel-dot${i === 0 ? ' active' : ''}`}
+            data-index={i}
+            aria-label={`FAQ question ${i + 1}`}
+          ></button>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .faq-section {
-    padding: 6rem 0;
+    padding: 0;
+    /*
+     * overflow-x: clip clips the carousel overflow without creating a BFC or a
+     * new scroll-container context (unlike overflow-x: hidden).  This prevents
+     * the carousel's scroll-width from widening the document while leaving the
+     * inner snap-scroll carousel fully functional and starting at card 1.
+     */
+    overflow-x: clip;
   }
 
-  .faq-list {
-    max-width: 800px;
-    margin: 3rem auto 0;
+  /* ── Carousel wrap — no overflow here; section handles clipping.
+   * width:100% ensures the inner carousel's percentage widths resolve correctly. */
+  .faq-carousel-wrap {
+    margin-top: 1.5rem;
+    width: 100%;
   }
 
-  .faq-item {
-    margin-bottom: 1rem;
+  /* ── Carousel track ── */
+  .faq-carousel {
+    display: flex;
+    flex-wrap: nowrap;           /* always single-row — explicit to prevent wrapping */
+    width: 100%;                 /* needed so card's calc(100%-X) resolves */
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+    touch-action: pan-x;
+  }
+
+  .faq-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ── FAQ card ── */
+  .faq-card {
+    /* mobile: ~1.3 cards visible; min-width ensures the card never collapses */
+    flex: 0 0 min(280px, calc(80vw - 2rem));
+    min-width: 0;
+    scroll-snap-align: start;
+    background: rgba(20, 20, 20, 0.72);
     border: 1px solid rgba(201, 169, 89, 0.3);
-    border-radius: 4px;
-    background: rgba(20, 20, 20, 0.6);
-    overflow: hidden;
-    transition: all 0.3s ease;
+    border-radius: 6px;
+    padding: 1.5rem 1.25rem 1.25rem;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    min-height: 160px;
+    transition: border-color 0.25s ease, background 0.25s ease;
+    /* Reset button defaults */
+    -webkit-appearance: none;
+    font-family: inherit;
   }
 
-  /* Float-up animation */
-  .float-up-item {
+  .faq-card:hover,
+  .faq-card:focus-visible {
+    border-color: rgba(201, 169, 89, 0.7);
+    background: rgba(28, 28, 28, 0.9);
+    outline: none;
+  }
+
+  .faq-card:focus-visible {
+    box-shadow: 0 0 0 2px rgba(201, 169, 89, 0.5);
+  }
+
+  /* Card reveal animation (triggered by IntersectionObserver) */
+  .card-reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateY(14px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
   }
 
-  .float-up-item.animated {
+  .card-reveal.visible {
     opacity: 1;
     transform: translateY(0);
   }
 
-  /* Staggered delays for FAQ items */
-  .faq-item:nth-child(1) { transition-delay: 0.05s; }
-  .faq-item:nth-child(2) { transition-delay: 0.1s; }
-  .faq-item:nth-child(3) { transition-delay: 0.15s; }
-  .faq-item:nth-child(4) { transition-delay: 0.2s; }
-  .faq-item:nth-child(5) { transition-delay: 0.25s; }
-  .faq-item:nth-child(6) { transition-delay: 0.3s; }
-  .faq-item:nth-child(7) { transition-delay: 0.35s; }
-  .faq-item:nth-child(8) { transition-delay: 0.4s; }
+  /* Staggered delays */
+  .faq-card:nth-child(1).card-reveal  { transition-delay: 0.30s; }
+  .faq-card:nth-child(2).card-reveal  { transition-delay: 0.36s; }
+  .faq-card:nth-child(3).card-reveal  { transition-delay: 0.42s; }
+  .faq-card:nth-child(4).card-reveal  { transition-delay: 0.48s; }
+  .faq-card:nth-child(5).card-reveal  { transition-delay: 0.54s; }
+  .faq-card:nth-child(6).card-reveal  { transition-delay: 0.60s; }
+  .faq-card:nth-child(7).card-reveal  { transition-delay: 0.66s; }
+  .faq-card:nth-child(8).card-reveal  { transition-delay: 0.72s; }
 
-  .faq-item:hover {
-    border-color: rgba(201, 169, 89, 0.6);
+  /* ── Card number ── */
+  .faq-card-num {
+    display: block;
+    font-family: var(--font-display, 'Cinzel'), serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: rgba(201, 169, 89, 0.55);
   }
 
-  .faq-question {
-    width: 100%;
-    padding: 1.5rem 2rem;
-    background: none;
-    border: none;
-    color: var(--color-gold, #c9a959);
+  /* ── Card question ── */
+  .faq-card-question {
+    display: block;
+    flex: 1;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 600;
-    text-align: left;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
+    color: var(--color-gold, #c9a959);
+    line-height: 1.35;
   }
 
-  .faq-question:hover {
-    color: #d4b76a;
-  }
-
-  .faq-icon {
-    font-size: 1.5rem;
-    font-weight: 300;
-    transition: all 0.3s ease;
+  /* ── Read-more hint ── */
+  .faq-card-cta {
+    display: block;
+    font-family: var(--font-body, 'EB Garamond'), serif;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.05em;
     flex-shrink: 0;
-    margin-left: 1rem;
+    transition: color 0.2s ease;
   }
 
-  .faq-answer {
-    padding: 0 2rem 1.5rem;
-    color: rgba(255, 255, 255, 0.85);
-    font-family: 'EB Garamond', serif;
-    font-size: 1.1rem;
-    line-height: 1.7;
-    animation: fadeIn 0.3s ease;
+  .faq-card:hover .faq-card-cta,
+  .faq-card:focus-visible .faq-card-cta {
+    color: rgba(201, 169, 89, 0.75);
   }
 
-  .faq-answer p {
-    margin: 0;
+  /* ── Navigation dots (shared with testimonials via .carousel-dot) ── */
+  .faq-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
   }
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 169, 89, 0.5);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.25s ease, border-color 0.25s ease;
   }
 
-  @media (max-width: 768px) {
+  .carousel-dot.active {
+    background: var(--color-gold, #c9a959);
+    border-color: var(--color-gold, #c9a959);
+  }
+
+  /* ── Desktop: 3 cards visible ── */
+  @media (min-width: 768px) {
     .faq-section {
-      padding: 4rem 0;
+      overflow-x: clip;
     }
 
-    .faq-question {
-      padding: 1.25rem 1.5rem;
-      font-size: 1.1rem;
+    .faq-card {
+      /* ~3 cards visible; vw-based so it never overflows the viewport */
+      flex: 0 0 min(280px, 28vw);
+      min-height: 180px;
     }
 
-    .faq-answer {
-      padding: 0 1.5rem 1.25rem;
-      font-size: 1rem;
-    }
-
-    .faq-icon {
-      font-size: 1.25rem;
+    .faq-card-question {
+      font-size: 1.2rem;
     }
   }
 </style>
 
+<!-- FAQ overlay content styles (injected into ParlourOverlay body) -->
+<style is:global>
+  .faq-overlay-content {
+    max-width: 720px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: left;
+  }
+
+  .faq-overlay-content .faq-overlay-num {
+    font-family: var(--font-display, 'Cinzel'), serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: rgba(201, 169, 89, 0.55);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .faq-overlay-content h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    color: var(--color-gold, #c9a959);
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+  }
+
+  .faq-overlay-content p {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.88);
+  }
+</style>
+
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const faqItems = document.querySelectorAll('.faq-item');
-    
-    faqItems.forEach(item => {
-      const question = item.querySelector('.faq-question');
-      const answer = item.querySelector('.faq-answer');
-      const icon = item.querySelector('.faq-icon');
-      
-      if (question && answer && icon) {
-        question.addEventListener('click', () => {
-          const isActive = item.classList.contains('active');
-          
-          // Close all other items
-          faqItems.forEach(otherItem => {
-            if (otherItem !== item) {
-              otherItem.classList.remove('active');
-              const otherAnswer = otherItem.querySelector('.faq-answer');
-              const otherQuestion = otherItem.querySelector('.faq-question');
-              const otherIcon = otherItem.querySelector('.faq-icon');
-              if (otherAnswer) otherAnswer.hidden = true;
-              if (otherQuestion) otherQuestion.setAttribute('aria-expanded', 'false');
-              if (otherIcon) otherIcon.textContent = '+';
-            }
-          });
-          
-          // Toggle current item
-          if (isActive) {
-            item.classList.remove('active');
-            answer.hidden = true;
-            question.setAttribute('aria-expanded', 'false');
-            icon.textContent = '+';
-          } else {
-            item.classList.add('active');
-            answer.hidden = false;
-            question.setAttribute('aria-expanded', 'true');
-            icon.textContent = '−';
+  /**
+   * FAQ carousel: dot sync, card-reveal animations, and overlay trigger.
+   *
+   * When a card is clicked, window.ParlourOverlay.open() is called with the
+   * full question + answer HTML.  ParlourOverlay handles close button, ESC key,
+   * and backdrop click — no additional logic needed here.
+   */
+  (function () {
+    // ── Inline FAQ data for overlay content ──
+    // This data is passed from the Astro build-time JSON so there is no
+    // runtime fetch required.
+    var faqItems = document.querySelectorAll('.faq-card');
+    var carousel  = document.getElementById('faq-carousel');
+    var dotsContainer = document.getElementById('faq-dots');
+
+    if (!faqItems.length || !carousel || !dotsContainer) return;
+
+    var dots  = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
+    var cards = Array.from(faqItems);
+
+    // ── Active-dot tracking ──
+    var rafId = null;
+    function updateActiveDot() {
+      if (!cards.length) return;
+      var cardWidth = cards[0].getBoundingClientRect().width;
+      var gap = 16; // matches 1rem gap
+      var idx = Math.round(carousel.scrollLeft / (cardWidth + gap));
+      idx = Math.max(0, Math.min(idx, dots.length - 1));
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+    }
+
+    carousel.addEventListener('scroll', function () {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateActiveDot);
+    }, { passive: true });
+
+    // ── Dot click → scroll to card ──
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () {
+        var card = cards[i];
+        if (!card) return;
+        card.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      });
+    });
+
+    // ── Card click → open ParlourOverlay with full answer ──
+    cards.forEach(function (card) {
+      card.addEventListener('click', function () {
+        var idx = parseInt(card.dataset.faqIndex, 10);
+        var qEl = card.querySelector('.faq-card-question');
+        var numEl = card.querySelector('.faq-card-num');
+        var question = qEl ? qEl.textContent.trim() : '';
+        var numText  = numEl ? numEl.textContent.trim() : '';
+
+        // Pull the answer from the data-answer attribute on the card button
+        var answer = card.dataset.answer || '';
+
+        var html =
+          '<div class="faq-overlay-content">' +
+            '<p class="faq-overlay-num">' + numText + '</p>' +
+            '<h3>' + escapeHtml(question) + '</h3>' +
+            '<p>' + escapeHtml(answer) + '</p>' +
+          '</div>';
+
+        if (window.ParlourOverlay) {
+          window.ParlourOverlay.open(html);
+        }
+      });
+    });
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ── Card reveal via IntersectionObserver ──
+    var sectionEl = document.getElementById('faq');
+    if (sectionEl && 'IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            cards.forEach(function (c) { c.classList.add('visible'); });
+            obs.disconnect();
           }
         });
-      }
-    });
-  });
+      }, { threshold: 0.15 });
+      obs.observe(sectionEl);
+    } else if (sectionEl) {
+      cards.forEach(function (c) { c.classList.add('visible'); });
+    }
+  })();
 </script>
+
