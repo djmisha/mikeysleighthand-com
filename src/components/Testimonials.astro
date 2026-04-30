@@ -60,17 +60,25 @@ import testimonialsData from '../data/testimonials.json';
 <style>
   .testimonials-section {
     padding: 0;
+    /*
+     * Prevent the carousel's scroll-width from widening the document on mobile,
+     * which causes the heading and sub-headline to appear clipped on the right.
+     */
+    overflow-x: hidden;
   }
 
   /* Wrapper constrains the carousel and dots together */
   .testimonials-carousel-wrap {
     position: relative;
     margin-top: 1.5rem;
+    overflow-x: hidden;
+    overflow-y: visible;
   }
 
   /* ── Carousel track ── */
   .testimonials-carousel {
     display: flex;
+    flex-wrap: nowrap;               /* always single-row */
     gap: 1.25rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -88,7 +96,9 @@ import testimonialsData from '../data/testimonials.json';
 
   /* ── Card ── */
   .testimonial-card {
-    flex: 0 0 calc(85% - 0.625rem);   /* mobile: ~1 visible */
+    /* mobile: ~1 visible; vw-based so it never causes horizontal document overflow */
+    flex: 0 0 min(320px, calc(82vw - 2rem));
+    min-width: 0;
     scroll-snap-align: start;
     background: rgba(20, 20, 20, 0.82);
     border: 1px solid rgba(201, 169, 89, 0.3);
@@ -211,10 +221,12 @@ import testimonialsData from '../data/testimonials.json';
   @media (min-width: 768px) {
     .testimonials-section {
       padding: 0;
+      overflow-x: hidden;
     }
 
     .testimonial-card {
-      flex: 0 0 calc(46% - 0.625rem);
+      /* ~2 visible; vw-based to stay within the viewport */
+      flex: 0 0 min(440px, 42vw);
     }
 
     .testimonial-text {

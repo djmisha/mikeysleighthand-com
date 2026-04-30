@@ -93,7 +93,7 @@
     touchThreshold:  45,
 
     /** Number of sparkle particles spawned per scene-change burst. */
-    particleCount:   32,
+    particleCount:   52,
 
     /**
      * Delay (ms) after DOMContentLoaded before the first scene reveals itself.
@@ -488,8 +488,9 @@
 
   /**
    * Spawns a brief shower of gold and white sparkle-rain particles that float
-   * on top of the scene transition.  Particle count is halved on mobile to
-   * preserve performance.
+   * on top of the scene transition.  Particles are spread across the full
+   * viewport (both axes) for a dramatic all-scene burst.
+   * Particle count is halved on mobile to preserve performance.
    */
   function triggerParticleBurst() {
     var layer = getParticleLayer();
@@ -503,18 +504,21 @@
         setTimeout(function () {
           var s   = document.createElement('div');
           s.className = 'sparkle-rain';
-          var size    = (1.5 + Math.random() * 3) + 'px';
+          var size    = (1.5 + Math.random() * 3.5) + 'px';
+          // Spread across the full viewport width and height
           s.style.left    = (Math.random() * 100) + '%';
-          s.style.top     = (Math.random() * 40) + '%'; // spread vertically too
+          s.style.top     = (Math.random() * 95) + '%';  // full scene height
           s.style.width   = size;
           s.style.height  = size;
           s.style.background = Math.random() > 0.45 ? '#ffd700' : '#ffffff';
-          s.style.setProperty('--fall-distance', (80 + Math.random() * 200) + 'px');
-          s.style.setProperty('--drift-x',       ((Math.random() - 0.5) * 100) + 'px');
-          s.style.setProperty('--fall-duration',  (0.35 + Math.random() * 0.5) + 's');
+          // Vary fall distance and direction so particles scatter in all directions
+          var fallDir = Math.random() > 0.5 ? 1 : -1;   // up or down
+          s.style.setProperty('--fall-distance', (fallDir * (60 + Math.random() * 160)) + 'px');
+          s.style.setProperty('--drift-x',       ((Math.random() - 0.5) * 140) + 'px');
+          s.style.setProperty('--fall-duration',  (0.3 + Math.random() * 0.55) + 's');
           layer.appendChild(s);
           setTimeout(function () { if (s.parentNode) s.remove(); }, 1000);
-        }, idx * 15);
+        }, idx * 12);  // slightly faster stagger to feel more simultaneous
       })(i);
     }
   }
