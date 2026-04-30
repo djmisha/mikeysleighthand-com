@@ -288,7 +288,7 @@ function initContactForm() {
     params.append("form-name", "contact");
     const formData = params.toString();
 
-    fetch("/", {
+   fetch("/__forms.html", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: formData,
