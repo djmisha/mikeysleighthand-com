@@ -17,7 +17,7 @@ window.openContactForm = function () {
       '<h2>Book Your Event</h2>' +
       '<p class="section-intro">Reserve Mikey Sleighthand for your event. Share your details below and we will follow up with availability and options.</p>' +
       '<div class="form-container">' +
-        '<form id="contact-form" class="contact-form" method="post" name="contact" novalidate>' +
+        '<form id="contact-form" class="contact-form" method="post" action="/" name="contact" novalidate>' +
           '<input type="hidden" name="form-name" value="contact">' +
           '<div class="form-row">' +
             '<div class="form-group form-group-half">' +
@@ -39,7 +39,8 @@ window.openContactForm = function () {
             '</div>' +
             '<div class="form-group form-group-half">' +
               '<label for="eventDate">Event Date</label>' +
-              '<input type="date" id="eventDate" name="eventDate" required>' +
+              '<input type="text" id="eventDate" name="eventDate" placeholder="MM/DD/YYYY or approximate date" required>' +
+              '<span class="helper-text">Exact or approximate date is fine</span>' +
               '<span class="error-message" id="eventDate-error"></span>' +
             '</div>' +
           '</div>' +
@@ -52,7 +53,8 @@ window.openContactForm = function () {
             '<div class="form-group form-group-half">' +
               '<label for="service">Service</label>' +
               '<select id="service" name="service" required>' +
-                '<option value="strolling-magic">Strolling magic $5000</option>' +
+                '<option value="" disabled selected>Select a Service</option>' +
+                '<option value="strolling-magic">Strolling Magic \u2014 $5,000</option>' +
               '</select>' +
               '<span class="error-message" id="service-error"></span>' +
             '</div>' +

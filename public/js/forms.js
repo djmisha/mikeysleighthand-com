@@ -272,10 +272,10 @@ function initContactForm() {
 
     // Collect form data and submit to Netlify
     const params = new URLSearchParams(new FormData(contactForm));
-    params.append("form-name", "contact");
+    params.set("form-name", "contact");
     const formData = params.toString();
 
-    fetch("/__forms.html", {
+    fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: formData,
