@@ -7,7 +7,8 @@
         <p class="section-intro">Reserve Mikey Sleighthand for your event. Share your details below and we will follow up with availability and options.</p>
         
         <div class="form-container">
-            <form id="contact-form" class="contact-form" method="post" novalidate>
+            <form id="contact-form" name="contact" class="contact-form" method="post" data-netlify="true" data-netlify-honeypot="website" novalidate>
+                <input type="hidden" name="form-name" value="contact" />
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" name="name" placeholder="Your full name" required>
