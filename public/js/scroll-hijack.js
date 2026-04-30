@@ -564,7 +564,10 @@
         setTimeout(function () {
           if (isTransitioning) {
             isTransitioning = false;
-            if (transitionSafetyTimer) { clearTimeout(transitionSafetyTimer); transitionSafetyTimer = null; }
+            if (transitionSafetyTimer) {
+              clearTimeout(transitionSafetyTimer);
+              transitionSafetyTimer = null;
+            }
             currentIndex = findClosestScene();
             snapToScene(currentIndex);
           }
@@ -708,7 +711,10 @@
     /** Force-reset the transition lock (emergency recovery). */
     reset: function () {
       isTransitioning = false;
-      if (transitionSafetyTimer) { clearTimeout(transitionSafetyTimer); transitionSafetyTimer = null; }
+      if (transitionSafetyTimer) {
+        clearTimeout(transitionSafetyTimer);
+        transitionSafetyTimer = null;
+      }
       currentIndex = findClosestScene();
       snapToScene(currentIndex);
     },

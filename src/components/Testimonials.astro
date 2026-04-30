@@ -274,7 +274,8 @@ import testimonialsData from '../data/testimonials.json';
     function updateActiveDot() {
       if (!cards.length) return;
       var cardWidth = cards[0].getBoundingClientRect().width;
-      var gap = 20; // matches 1.25rem gap
+      // Read the actual gap from computed styles to stay in sync with CSS.
+      var gap = parseFloat(getComputedStyle(carousel).columnGap) || 20;
       var idx = Math.round(carousel.scrollLeft / (cardWidth + gap));
       idx = Math.max(0, Math.min(idx, dots.length - 1));
       dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
@@ -305,7 +306,7 @@ import testimonialsData from '../data/testimonials.json';
     carousel.addEventListener('touchend', function (e) {
       var dx = touchStartX - e.changedTouches[0].clientX;
       var cardWidth = cards[0] ? cards[0].getBoundingClientRect().width : 0;
-      var gap = 20;
+      var gap = parseFloat(getComputedStyle(carousel).columnGap) || 20;
       var maxScroll = (cards.length - 1) * (cardWidth + gap);
 
       // At last card swiping left (forward) → wrap to first
