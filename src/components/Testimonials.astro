@@ -75,6 +75,8 @@ import testimonialsData from '../data/testimonials.json';
   .embla {
     overflow: hidden;
     width: 100%;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
   }
 
   /* ── Embla track ── */
@@ -85,8 +87,9 @@ import testimonialsData from '../data/testimonials.json';
 
   /* ── Slide — one full-width card per view ── */
   .embla__slide {
-    flex: 0 0 100%;
+    flex: 0 0 calc(100% - 0.5rem);
     min-width: 0;
+    margin-left: 0.5rem;
   }
 
   /* ── Testimonial card ── */
@@ -216,7 +219,7 @@ import testimonialsData from '../data/testimonials.json';
   const emblaNode = document.getElementById('testimonials-embla');
   const dotsContainer = document.getElementById('testimonials-dots');
   if (emblaNode && dotsContainer) {
-    const embla = EmblaCarousel(emblaNode, { loop: true, align: 'start' });
+    const embla = EmblaCarousel(emblaNode, { loop: false, align: 'start' });
     const dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
 
     function syncDots() {

@@ -77,6 +77,8 @@ import faqData from '../data/faq.json';
   .embla {
     overflow: hidden;
     width: 100%;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
   }
 
   /* ── Embla track ── */
@@ -89,6 +91,7 @@ import faqData from '../data/faq.json';
   .embla__slide {
     flex: 0 0 100%;
     min-width: 0;
+    padding-left: 0.5rem;
   }
 
   /* ── FAQ card ── */
@@ -248,7 +251,7 @@ import faqData from '../data/faq.json';
   const dotsContainer = document.getElementById('faq-dots');
 
   if (emblaNode && dotsContainer) {
-    const embla = EmblaCarousel(emblaNode, { loop: true, align: 'start' });
+    const embla = EmblaCarousel(emblaNode, { loop: false, align: 'start' });
     const dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
 
     function syncDots() {
