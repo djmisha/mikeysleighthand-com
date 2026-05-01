@@ -1,14 +1,29 @@
 ---
-// ContactForm.astro — Single source of truth for the contact form.
-// Rendered as a hidden template in the page HTML so Netlify detects it at build time.
-// main.js clones this into the overlay when the user opens the form.
+// ContactForm.astro — Contact form with two parts:
+// 1. A hidden plain <form> for Netlify's build-time HTML parser to detect field names
+// 2. A <template> for main.js to clone into the overlay when the user opens the form
 ---
+
+<!-- Hidden form for Netlify build-time detection — NOT inside <template> -->
+<form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <input type="tel" name="phone" />
+  <input type="text" name="eventDate" />
+  <input type="text" name="venue" />
+  <input type="text" name="service" />
+  <textarea name="message"></textarea>
+  <input type="text" name="bot-field" />
+</form>
+
+<!-- Template for the interactive overlay form — cloned by main.js -->
 <template id="contact-form-template">
   <div class="overlay-contact-form">
     <h2>Book Your Event</h2>
     <p class="section-intro">Reserve Mikey Sleighthand for your event. Share your details below and we will follow up with availability and options.</p>
     <div class="form-container">
-      <form id="contact-form" class="contact-form" method="POST" name="contact" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+      <form id="contact-form" class="contact-form" method="POST" name="contact" novalidate>
+        <input type="hidden" name="form-name" value="contact" />
         <div class="form-row">
           <div class="form-group form-group-half">
             <label for="name">Full Name</label>
