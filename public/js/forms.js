@@ -105,7 +105,7 @@ window.setupContactForm = function () {
     }
     var formData = parts.join("&");
 
-    fetch("/__forms.html", {
+    fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: formData,

@@ -1,6 +1,7 @@
 ---
 import faqData from '../data/faq.json';
 import testimonialsData from '../data/testimonials.json';
+import ContactForm from '../components/ContactForm.astro';
 
 interface Props {
   title: string;
@@ -255,7 +256,7 @@ const allStructuredData = [
   <main>
     <slot />
   </main>
-
+  <ContactForm />
   <!-- Magic Owl Chatbot -->
   <div class="owl-chatbot">
     <div class="owl-avatar">
