@@ -91,7 +91,7 @@ window.setupContactForm = function () {
     // Submit to Netlify
     var formData = new URLSearchParams(new FormData(form)).toString();
 
-    fetch("/__forms.html", {
+    fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: formData,
