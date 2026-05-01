@@ -39,9 +39,3 @@ npm run build
 npm run preview
 ```
 
-## Project Notes
-
-- Live route scope is intentionally limited to the homepage in src/pages.
-- Legacy club pages were archived for reference under archived/pages.
-- SEO is focused on the keyphrase: San Diego magician.
-# mikeysleighthand-com

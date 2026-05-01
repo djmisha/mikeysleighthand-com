@@ -1,7 +1,7 @@
 {
-  "name": "the-parlour",
+  "name": "mikey-sleighthand",
   "version": "1.0.0",
-  "description": "The most secret magic society in the world .",
+  "description": "Official website for Mikey Sleighthand, San Diego's premier magician and entertainer. Book Mikey for your next event and experience unforgettable magic performances that will leave your guests amazed and delighted.",
   "type": "module",
   "scripts": {
     "dev": "astro dev",

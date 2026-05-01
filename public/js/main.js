@@ -17,7 +17,7 @@ window.openContactForm = function () {
       '<h2>Book Your Event</h2>' +
       '<p class="section-intro">Reserve Mikey Sleighthand for your event. Share your details below and we will follow up with availability and options.</p>' +
       '<div class="form-container">' +
-        '<form id="contact-form" class="contact-form" method="post" action="/" name="contact" novalidate>' +
+        '<form id="contact-form" class="contact-form" method="post" name="contact" novalidate>' +
           '<input type="hidden" name="form-name" value="contact">' +
           '<div class="form-row">' +
             '<div class="form-group form-group-half">' +
@@ -39,8 +39,7 @@ window.openContactForm = function () {
             '</div>' +
             '<div class="form-group form-group-half">' +
               '<label for="eventDate">Event Date</label>' +
-              '<input type="text" id="eventDate" name="eventDate" placeholder="MM/DD/YYYY or approximate date" required>' +
-              '<span class="helper-text">Exact or approximate date is fine</span>' +
+              '<input type="text" id="eventDate" name="eventDate" placeholder="MM/DD/YYYY" required>' +
               '<span class="error-message" id="eventDate-error"></span>' +
             '</div>' +
           '</div>' +
@@ -94,16 +93,8 @@ document.addEventListener('click', function (e) {
 window.reinitPage = function () {
   window.setupRandomHero();
   window.setupSmoothScrolling();
-  window.setupEventCardHover();
-  window.setupMembershipAnimations();
   window.setupContactForm();
   window.setupOwlChatbot();
-  window.setupHeaderEyes();
-  window.setupArtFormHover();
-  window.setupHamburgerMenu();
-  window.setupMagicTricks();
-  window.setupBackToTopButton();
-  window.setupLinksPage();
   if (typeof window.initHeroSparkles === "function") {
     window.initHeroSparkles();
   }
