@@ -98,16 +98,19 @@ window.setupContactForm = function () {
     })
       .then(function (response) {
         if (response.ok) {
-          // Show thank you message in place of form
-          var container = form.parentElement;
-          form.style.display = "none";
-          var responseEl = container.querySelector("#form-response") || document.getElementById("form-response");
-          if (responseEl) {
-            responseEl.style.display = "block";
-            responseEl.classList.add("success");
-            responseEl.classList.remove("error");
-            responseEl.querySelector("p").textContent =
-              "Thank you for your booking request. We\u2019ll review your event details and get back to you within 24 hours.";
+          // Replace entire overlay content with styled thank-you message
+          var overlayForm = form.closest(".overlay-contact-form");
+          if (overlayForm) {
+            overlayForm.innerHTML =
+              '<div class="form-success-message">' +
+                '<div class="form-success-icon">\u2728</div>' +
+                '<h2>Request Received</h2>' +
+                '<p>Thank you for your booking request. We\u2019ll review your event details and get back to you within 24 hours.</p>' +
+                '<button class="btn form-success-close">Close</button>' +
+              '</div>';
+            overlayForm.querySelector(".form-success-close").addEventListener("click", function () {
+              window.SleighthandOverlay.closeTop();
+            });
           }
         } else {
           showError(btn);

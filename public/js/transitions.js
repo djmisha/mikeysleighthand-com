@@ -15,7 +15,7 @@
     document.body.appendChild(overlay);
   }
 
-  var SESSION_KEY = "parlour-transition";
+  var SESSION_KEY = "sleighthand-transition";
   // 40% chance of gold sparkles, 60% white — used in createSparkleWave
   var GOLD_SPARKLE_RATIO = 0.4;
   var _navigating = false;
@@ -72,7 +72,7 @@
   // --- Incoming: arriving via real navigation (fallback path only) ---
   if (sessionStorage.getItem(SESSION_KEY)) {
     sessionStorage.removeItem(SESSION_KEY);
-    var initStyle = document.getElementById("parlour-transition-init");
+    var initStyle = document.getElementById("sleighthand-transition-init");
     if (initStyle) initStyle.parentNode.removeChild(initStyle);
     overlay.style.opacity = "1";
     overlay.classList.add("active");

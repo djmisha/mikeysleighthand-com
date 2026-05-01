@@ -5,7 +5,7 @@
 (function () {
   var BASE_Z = 10100;
 
-  window.ParlourOverlay = {
+  window.SleighthandOverlay = {
     stack: [],
 
     open: function (contentHtml, options) {
@@ -13,14 +13,14 @@
       var zIndex = BASE_Z + this.stack.length * 10;
 
       var overlay = document.createElement("div");
-      overlay.className = "parlour-overlay";
+      overlay.className = "sleighthand-overlay";
       overlay.setAttribute("role", "dialog");
       overlay.setAttribute("aria-modal", "true");
       overlay.style.zIndex = zIndex;
 
       overlay.innerHTML =
-        '<button class="parlour-overlay-close" aria-label="Close overlay (Escape)" title="Close (Esc)">\u2715</button>' +
-        '<div class="parlour-overlay-body">' +
+        '<button class="sleighthand-overlay-close" aria-label="Close overlay (Escape)" title="Close (Esc)">\u2715</button>' +
+        '<div class="sleighthand-overlay-body">' +
         contentHtml +
         "</div>";
 
@@ -35,15 +35,15 @@
       });
 
       // Close button
-      var closeBtn = overlay.querySelector(".parlour-overlay-close");
+      var closeBtn = overlay.querySelector(".sleighthand-overlay-close");
       closeBtn.addEventListener("click", function () {
-        window.ParlourOverlay.close(overlay);
+        window.SleighthandOverlay.close(overlay);
       });
 
       // Close on backdrop click (not on content)
       overlay.addEventListener("click", function (e) {
         if (e.target === overlay) {
-          window.ParlourOverlay.close(overlay);
+          window.SleighthandOverlay.close(overlay);
         }
       });
 
@@ -83,8 +83,8 @@
 
   // ESC key closes top overlay
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && window.ParlourOverlay.stack.length) {
-      window.ParlourOverlay.closeTop();
+    if (e.key === "Escape" && window.SleighthandOverlay.stack.length) {
+      window.SleighthandOverlay.closeTop();
     }
   });
 })();

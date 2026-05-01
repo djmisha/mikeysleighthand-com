@@ -6,14 +6,14 @@
 }
 
 /* ============================================================
-   Parlour Overlay System — Reusable full-screen overlay
+   Sleighthand Overlay System — Reusable full-screen overlay
    ============================================================ */
 
 body.overlay-open {
   overflow: hidden;
 }
 
-.parlour-overlay {
+.sleighthand-overlay {
   position: fixed;
   inset: 0;
   background: rgba(5, 5, 5, 0.97);
@@ -27,12 +27,12 @@ body.overlay-open {
   overflow-y: auto;
 }
 
-.parlour-overlay.visible {
+.sleighthand-overlay.visible {
   opacity: 1;
   pointer-events: auto;
 }
 
-.parlour-overlay-close {
+.sleighthand-overlay-close {
   position: fixed;
   top: 20px;
   right: 20px;
@@ -52,15 +52,15 @@ body.overlay-open {
   font-family: var(--font-display, 'Cinzel'), serif;
 }
 
-.parlour-overlay-close:hover,
-.parlour-overlay-close:focus {
+.sleighthand-overlay-close:hover,
+.sleighthand-overlay-close:focus {
   background: var(--color-gold, #c9a959);
   color: #0a0a0a;
   outline: 2px solid var(--color-gold, #c9a959);
   outline-offset: 2px;
 }
 
-.parlour-overlay-body {
+.sleighthand-overlay-body {
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -70,7 +70,7 @@ body.overlay-open {
 }
 
 /* ── Navigation overlay — full-screen 3-column layout ── */
-.parlour-overlay-body .nav-inner {
+.sleighthand-overlay-body .nav-inner {
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -82,18 +82,18 @@ body.overlay-open {
   margin-top: 0;
 }
 
-.parlour-overlay-body .nav-column {
+.sleighthand-overlay-body .nav-column {
   flex: 1;
   padding: 30px 50px;
   border-right: 1px solid rgba(201, 169, 89, 0.15);
   text-align: left;
 }
 
-.parlour-overlay-body .nav-column:last-child {
+.sleighthand-overlay-body .nav-column:last-child {
   border-right: none;
 }
 
-.parlour-overlay-body .nav-column h3 {
+.sleighthand-overlay-body .nav-column h3 {
   font-family: var(--font-display, 'Cinzel'), serif;
   color: rgba(255, 255, 255, 0.35);
   font-size: 0.65rem;
@@ -105,18 +105,18 @@ body.overlay-open {
   font-weight: 400;
 }
 
-.parlour-overlay-body .nav-column ul {
+.sleighthand-overlay-body .nav-column ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.parlour-overlay-body .nav-column ul li {
+.sleighthand-overlay-body .nav-column ul li {
   margin-bottom: 0;
 }
 
-.parlour-overlay-body .nav-column ul li a,
-.parlour-overlay-body .nav-column ul li span {
+.sleighthand-overlay-body .nav-column ul li a,
+.sleighthand-overlay-body .nav-column ul li span {
   font-family: var(--font-heading, 'Cormorant Garamond'), serif;
   font-size: 2.4rem;
   color: var(--color-gold, #c9a959);
@@ -130,15 +130,15 @@ body.overlay-open {
   cursor: pointer;
 }
 
-.parlour-overlay-body .nav-column ul li a:hover,
-.parlour-overlay-body .nav-column ul li span:hover {
+.sleighthand-overlay-body .nav-column ul li a:hover,
+.sleighthand-overlay-body .nav-column ul li span:hover {
   color: #ffffff;
   padding-left: 10px;
 }
 
 /* Mobile nav overlay — stacked, no scroll needed */
 @media (max-width: 768px) {
-  .parlour-overlay-body .nav-inner {
+  .sleighthand-overlay-body .nav-inner {
     flex-direction: column;
     align-items: flex-start;
     padding: 0 28px;
@@ -148,32 +148,32 @@ body.overlay-open {
     overflow-y: auto;
   }
 
-  .parlour-overlay-body .nav-column {
+  .sleighthand-overlay-body .nav-column {
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 16px 0;
     width: 100%;
   }
 
-  .parlour-overlay-body .nav-column:last-child {
+  .sleighthand-overlay-body .nav-column:last-child {
     border-bottom: none;
   }
 
-  .parlour-overlay-body .nav-column h3 {
+  .sleighthand-overlay-body .nav-column h3 {
     font-size: 0.6rem;
     margin-bottom: 0.75rem;
     padding-bottom: 0.5rem;
   }
 
-  .parlour-overlay-body .nav-column ul li a,
-  .parlour-overlay-body .nav-column ul li span {
+  .sleighthand-overlay-body .nav-column ul li a,
+  .sleighthand-overlay-body .nav-column ul li span {
     font-size: 1.7rem;
     padding: 0.3rem 0;
   }
 }
 
-/* Magic area inside parlour overlay */
-.parlour-overlay-body #magic-area {
+/* Magic area inside sleighthand overlay */
+.sleighthand-overlay-body #magic-area {
   max-width: 800px;
   width: 90%;
   padding: 30px 20px;
@@ -188,13 +188,13 @@ body.overlay-open {
   max-height: 85vh;
 }
 
-.parlour-overlay-body #magic-area h2 {
+.sleighthand-overlay-body #magic-area h2 {
   color: var(--color-gold, #c9a959);
   margin-bottom: 20px;
 }
 
 /* Secret content inside overlay */
-.parlour-overlay-body .secret-content {
+.sleighthand-overlay-body .secret-content {
   max-width: 900px;
   padding: 40px;
   text-align: center;
@@ -461,10 +461,52 @@ body.overlay-open {
   margin-top: 1rem;
 }
 
-/* Prevent scroll on desktop */
-.parlour-overlay .overlay-contact-form {
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
+/* Let the overlay scroll naturally when form content overflows */
+.sleighthand-overlay:has(.overlay-contact-form) {
+  justify-content: flex-start;
+}
+
+.sleighthand-overlay:has(.overlay-contact-form) .sleighthand-overlay-body {
+  align-items: flex-start;
+  min-height: auto;
+}
+
+/* Form success message */
+.form-success-message {
+  text-align: center;
+  padding: 60px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-success-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  line-height: 1;
+}
+
+.form-success-message h2 {
+  font-family: var(--font-heading, 'Cormorant Garamond'), serif;
+  font-size: 2.4rem;
+  color: var(--color-gold, #c9a959);
+  margin-bottom: 1rem;
+}
+
+.form-success-message p {
+  font-size: 1.15rem;
+  color: var(--color-text-secondary, #a09c94);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.form-success-message .btn {
+  margin-top: 0.5rem;
+}
+
+/* Re-center the overlay when showing success (content is short) */
+.sleighthand-overlay:has(.form-success-message) .sleighthand-overlay-body {
+  align-items: center;
+  min-height: 100vh;
 }
 
 @media (max-width: 768px) {
@@ -475,10 +517,5 @@ body.overlay-open {
 
   .overlay-contact-form h2 {
     font-size: 1.8rem;
-  }
-
-  .parlour-overlay .overlay-contact-form {
-    max-height: none;
-    overflow-y: visible;
   }
 }

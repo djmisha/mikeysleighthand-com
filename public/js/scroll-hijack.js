@@ -472,7 +472,7 @@
 
   /**
    * Returns (creating on first call) a transparent fixed-position container
-   * that sits above all scene content but below ParlourOverlay overlays.
+   * that sits above all scene content but below SleighthandOverlay overlays.
    * z-index 9999 places it above scenes, hero sparkles, and particles-js (999)
    * but below the overlay stack which starts at 10100.
    *

@@ -75,7 +75,7 @@ window.openContactForm = function () {
       '</div>' +
     '</div>';
 
-  window.ParlourOverlay.open(html);
+  window.SleighthandOverlay.open(html);
   window.setupContactForm();
 };
 

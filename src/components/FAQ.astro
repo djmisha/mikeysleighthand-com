@@ -3,11 +3,11 @@ import faqData from '../data/faq.json';
 ---
 
 <!--
-  FAQ — Embla Carousel (embla-carousel) with ParlourOverlay answers
+  FAQ — Embla Carousel (embla-carousel) with SleighthandOverlay answers
   ─────────────────────────────────────────────────────────────────────────
   Displays all FAQ questions as full-width cards in a single-card carousel.
   Clicking/tapping a card opens the full question + answer in the site's
-  reusable ParlourOverlay.
+  reusable SleighthandOverlay.
 
   Powered by Embla Carousel: the most popular, actively maintained,
   mobile-first open-source carousel library.
@@ -205,7 +205,7 @@ import faqData from '../data/faq.json';
   }
 </style>
 
-<!-- FAQ overlay content styles (injected into ParlourOverlay body) -->
+<!-- FAQ overlay content styles (injected into SleighthandOverlay body) -->
 <style is:global>
   .faq-overlay-content {
     max-width: 720px;
@@ -263,7 +263,7 @@ import faqData from '../data/faq.json';
       dot.addEventListener('click', () => embla.scrollTo(i));
     });
 
-    // ── Card click → open ParlourOverlay with full answer ──
+    // ── Card click → open SleighthandOverlay with full answer ──
     const cards = Array.from(emblaNode.querySelectorAll('.faq-card'));
 
     cards.forEach((card) => {
@@ -281,8 +281,8 @@ import faqData from '../data/faq.json';
             '<p>' + escapeHtml(answer) + '</p>' +
           '</div>';
 
-        if (window.ParlourOverlay) {
-          window.ParlourOverlay.open(html);
+        if (window.SleighthandOverlay) {
+          window.SleighthandOverlay.open(html);
         }
       });
     });
