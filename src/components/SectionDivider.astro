@@ -1,9 +1,0 @@
----
-interface Props {
-  type: 'wave' | 'peaks' | 'curve' | 'zigzag';
-}
-
-const { type } = Astro.props;
----
-
-<div class={`section-divider divider-${type}`}></div>

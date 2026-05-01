@@ -888,6 +888,22 @@ body {
 .contact-section {
     box-shadow: none;
 }
+
+.cta-footnote {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    font-size: 0.75rem;
+    color: rgba(128, 128, 128, 0.5);
+    font-family: 'EB Garamond', serif;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.cta-footnote a {
+    color: rgba(128, 128, 128, 0.6);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+}
 .btn,
 .content-btn,
 .send-btn,
