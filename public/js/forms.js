@@ -88,8 +88,22 @@ window.setupContactForm = function () {
       btn.textContent = "Sending...";
     }
 
-    // Submit to Netlify
-    var formData = new URLSearchParams(new FormData(form)).toString();
+    // Submit to Netlify — manually encode to avoid URLSearchParams(FormData) issues
+    var encode = function (key, value) {
+      return encodeURIComponent(key) + "=" + encodeURIComponent(value);
+    };
+    var parts = [encode("form-name", "contact")];
+    for (var i = 0; i < fields.length; i++) {
+      var input = getInput(fields[i].name);
+      if (input) {
+        parts.push(encode(fields[i].name, input.value));
+      }
+    }
+    var botField = getInput("bot-field");
+    if (botField) {
+      parts.push(encode("bot-field", botField.value));
+    }
+    var formData = parts.join("&");
 
     fetch("/", {
       method: "POST",
